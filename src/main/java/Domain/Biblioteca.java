@@ -1,5 +1,7 @@
 package Domain;
 
+import Repository.UnavailableException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +38,7 @@ public class Biblioteca {
         List<ExemplarCarte> all = new ArrayList<>();
         all.addAll(exemplareDisponibile);
         all.addAll(exemplareInchiriate);
-        return all; // TODO: maybe create the "Imprumut" repo, in which save all the unavailable books for now...
+        return all;
     }
 
     public Iterable<ExemplarCarte> getAllAvailable() {
@@ -44,14 +46,71 @@ public class Biblioteca {
     }
 
     public ExemplarCarte findExemplarById(int codExemplar) {
+        // ... maybe split? TODO: vague function naming... available or unavailable ??? - refactor ASAP !!!
+        return null; // TODO: implement this
+        //TODO: decide if this should be refactored...
+    }
+    public ExemplarCarte findExemplarDisponibilById(int codExemplar) {
+        for (ExemplarCarte ex : this.exemplareDisponibile) {
+            if(ex.getCodUnic() == codExemplar)
+                return ex;
+        }
+        return null;
+    }
+    public ExemplarCarte findExemplarInchiriatById(int codExemplar) {
+        for (ExemplarCarte ex : this.exemplareInchiriate) {
+            if(ex.getCodUnic() == codExemplar)
+                return ex;
+        }
         return null;
     }
 
-    public void imprumuta(ExemplarCarte exemplar) {
 
+    public void imprumuta(ExemplarCarte exemplar) {
+        if( this.esteExemplarInchiriat(exemplar)){
+            throw new UnavailableException("Cartea a fost deja imprumutata intre timp!");
+        }
+        this.deleteExemplarDisponibil(exemplar);
+        this.addExemplarInchiriat(exemplar);
+    }
+
+    private void addExemplarInchiriat(ExemplarCarte exemplar) {
+        this.exemplareInchiriate.add(exemplar);
+    }
+
+    private void deleteExemplarDisponibil(ExemplarCarte exemplar) {
+        for (ExemplarCarte ex : this.exemplareDisponibile) {
+            if(ex.getCodUnic() == exemplar.getCodUnic())
+                this.exemplareDisponibile.remove(ex);
+                break;
+        }
     }
 
     public void returneaza(ExemplarCarte exemplar) {
+        if( ! this.esteExemplarInchiriat(exemplar)){
+            throw new UnavailableException("Cartea a fost deja returnata intre timp?");
+        }
+        this.deleteExemplarInchiriat(exemplar);
+        this.addExemplarDisponibil(exemplar);
+    }
 
+    private void addExemplarDisponibil(ExemplarCarte exemplar) {
+        this.exemplareDisponibile.add(exemplar);
+    }
+
+    private void deleteExemplarInchiriat(ExemplarCarte exemplar) {
+        for (ExemplarCarte ex : this.exemplareInchiriate) {
+            if(ex.getCodUnic() == exemplar.getCodUnic())
+                this.exemplareInchiriate.remove(ex);
+            break;
+        }
+    }
+
+    public boolean esteExemplarInchiriat(ExemplarCarte exem) {
+        for (ExemplarCarte ex : this.exemplareInchiriate) {
+            if(ex.getCodUnic() == exem.getCodUnic())
+                return true;
+        }
+        return false;
     }
 }

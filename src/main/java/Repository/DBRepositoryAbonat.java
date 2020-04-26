@@ -4,7 +4,8 @@ import Domain.Abonat;
 
 public class DBRepositoryAbonat {
     public Abonat findByCredentials(int codAbonat, String password) {
-        return null;
+        return new Abonat("1234","da","avem","este",1111,"1");
+        // TODO: return null; implement this !!!
     }
 
     public Abonat findById(int codAbonat) {

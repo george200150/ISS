@@ -4,6 +4,7 @@ import Domain.Bibliotecar;
 
 public class DBRepositoryBibliotecar {
     public Bibliotecar findByCredentials(String password) {
-        return null;
+        return new Bibliotecar();
+        //TODO: return null; not implemented !!!
     }
 }

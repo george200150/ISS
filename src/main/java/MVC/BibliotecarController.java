@@ -2,6 +2,8 @@ package MVC;
 
 import Domain.Bibliotecar;
 import Domain.ExemplarCarte;
+import Domain.ExemplarCarteDTOWithStatus;
+import Repository.OverdueError;
 import Service.MasterService;
 import Utils.ExemplarStateChangeEvent;
 import Utils.Observer;
@@ -22,48 +24,53 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+
 public class BibliotecarController implements Observer<ExemplarStateChangeEvent> {
     @FXML
-    public TextField textFieldCodUnic;
+    private TextField textFieldCodUnic;
     @FXML
-    public TextField textFieldTitlu;
+    private TextField textFieldTitlu;
     @FXML
-    public TextField textFieldISBN;
+    private TextField textFieldISBN;
     @FXML
-    public TextField textFieldAutor;
+    private TextField textFieldAutor;
     @FXML
-    public TextField textFieldEditura;
+    private TextField textFieldEditura;
     @FXML
-    public TextField textFieldAnAparitie;
+    private TextField textFieldAnAparitie;
     @FXML
-    public TextField textFieldCodAbonat;
+    private TextField textFieldCodAbonat;
     @FXML
-    public TextField textFieldCodExemplar;
+    private TextField textFieldCodExemplar;
+    @FXML
+    private TextField textFieldStatus;
 
     @FXML
     private Label labelBibliotecar;
 
     @FXML
-    private TableView<ExemplarCarteDTO> tableExemplareBibliotecar;
+    private TableView<ExemplarCarteDTOWithStatus> tableExemplareBibliotecar;
     @FXML
-    private TableColumn<ExemplarCarteDTO, String> tableExemplareBibliotecarColumnCodUnic;
+    private TableColumn<ExemplarCarteDTOWithStatus, String> tableExemplareBibliotecarColumnCodUnic;
     @FXML
-    private TableColumn<ExemplarCarteDTO, String> tableExemplareBibliotecarColumnTitlu;
+    private TableColumn<ExemplarCarteDTOWithStatus, String> tableExemplareBibliotecarColumnTitlu;
     @FXML
-    private TableColumn<ExemplarCarteDTO, String> tableExemplareBibliotecarColumnISBN;
+    private TableColumn<ExemplarCarteDTOWithStatus, String> tableExemplareBibliotecarColumnISBN;
     @FXML
-    private TableColumn<ExemplarCarteDTO, String> tableExemplareBibliotecarColumnAutor;
+    private TableColumn<ExemplarCarteDTOWithStatus, String> tableExemplareBibliotecarColumnAutor;
     @FXML
-    private TableColumn<ExemplarCarteDTO, String> tableExemplareBibliotecarColumnEditura;
+    private TableColumn<ExemplarCarteDTOWithStatus, String> tableExemplareBibliotecarColumnEditura;
     @FXML
-    private TableColumn<ExemplarCarteDTO, String> tableExemplareBibliotecarColumnAnAparitie;
+    private TableColumn<ExemplarCarteDTOWithStatus, String> tableExemplareBibliotecarColumnAnAparitie;
+    @FXML
+    private TableColumn<ExemplarCarteDTOWithStatus, String> tableExemplareBibliotecarColumnStatus;
 
 
     private Stage dialogStage;
     private Bibliotecar loggedInBibliotecar;
     private MasterService service;
 
-    private ObservableList<ExemplarCarteDTO> model = FXCollections.observableArrayList();
+    private ObservableList<ExemplarCarteDTOWithStatus> model = FXCollections.observableArrayList();
 
 
     public void setService(MasterService masterService, Stage dialogStage, Bibliotecar loggedInBibliotecar) {
@@ -77,7 +84,7 @@ public class BibliotecarController implements Observer<ExemplarStateChangeEvent>
 
     private void initModel() {
 
-        Iterable<ExemplarCarte> grades = service.getAllExemplareDisponibile(); //TODO: toate exemplarele se vor afisa.
+        Iterable<ExemplarCarte> grades = service.getAllExemplareExistente(); // toate exemplarele se vor afisa.
         List<ExemplarCarte> gradeList = StreamSupport.stream(grades.spliterator(), false)
                 .collect(Collectors.toList());
 
@@ -86,42 +93,50 @@ public class BibliotecarController implements Observer<ExemplarStateChangeEvent>
 
     @FXML
     public void initialize() {
-        tableExemplareBibliotecarColumnCodUnic.setCellValueFactory(new PropertyValueFactory<ExemplarCarteDTO, String>("codUnic"));
-        tableExemplareBibliotecarColumnTitlu.setCellValueFactory(new PropertyValueFactory<ExemplarCarteDTO, String>("titlu"));
-        tableExemplareBibliotecarColumnISBN.setCellValueFactory(new PropertyValueFactory<ExemplarCarteDTO, String>("ISBN"));
-        tableExemplareBibliotecarColumnAutor.setCellValueFactory(new PropertyValueFactory<ExemplarCarteDTO, String>("autor"));
-        tableExemplareBibliotecarColumnEditura.setCellValueFactory(new PropertyValueFactory<ExemplarCarteDTO, String>("editura"));
-        tableExemplareBibliotecarColumnAnAparitie.setCellValueFactory(new PropertyValueFactory<ExemplarCarteDTO, String>("anAparitie"));
+        tableExemplareBibliotecarColumnCodUnic.setCellValueFactory(new PropertyValueFactory<ExemplarCarteDTOWithStatus, String>("codUnic"));
+        tableExemplareBibliotecarColumnTitlu.setCellValueFactory(new PropertyValueFactory<ExemplarCarteDTOWithStatus, String>("titlu"));
+        tableExemplareBibliotecarColumnISBN.setCellValueFactory(new PropertyValueFactory<ExemplarCarteDTOWithStatus, String>("ISBN"));
+        tableExemplareBibliotecarColumnAutor.setCellValueFactory(new PropertyValueFactory<ExemplarCarteDTOWithStatus, String>("autor"));
+        tableExemplareBibliotecarColumnEditura.setCellValueFactory(new PropertyValueFactory<ExemplarCarteDTOWithStatus, String>("editura"));
+        tableExemplareBibliotecarColumnAnAparitie.setCellValueFactory(new PropertyValueFactory<ExemplarCarteDTOWithStatus, String>("anAparitie"));
+        tableExemplareBibliotecarColumnStatus.setCellValueFactory(new PropertyValueFactory<ExemplarCarteDTOWithStatus, String>("status"));
 
         tableExemplareBibliotecar.setItems(model);
     }
 
-    private List<ExemplarCarteDTO> convertGradeToDTO(List<ExemplarCarte> gradeList) {
+    private List<ExemplarCarteDTOWithStatus> convertGradeToDTO(List<ExemplarCarte> gradeList) {
         return gradeList.stream()
-                .map(exem -> { return new ExemplarCarteDTO(exem.getCodUnic(), exem.getRefer()); })
+                .map(exem -> new ExemplarCarteDTOWithStatus(exem.getCodUnic(), exem.getRefer(), this.service.esteExemplarInchiriat(exem)))
                 .collect(Collectors.toList());
     }
 
 
     public void handleMoreDetails(MouseEvent mouseEvent) {
-        ExemplarCarteDTO dto = this.tableExemplareBibliotecar.getSelectionModel().getSelectedItem(); // TODO: dto must a @NotNull object (hopefully...)
-        this.textFieldCodUnic.setText(Integer.toString(dto.getCodUnic()));
-        this.textFieldTitlu.setText(dto.getTitlu());
-        this.textFieldISBN.setText(dto.getISBN());
-        this.textFieldAutor.setText(dto.getAutor());
-        this.textFieldEditura.setText(dto.getEditura());
-        this.textFieldAnAparitie.setText(Integer.toString(dto.getAnAparitie()));
+        ExemplarCarteDTOWithStatus dto = this.tableExemplareBibliotecar.getSelectionModel().getSelectedItem();
+        if(dto != null){
+            this.textFieldCodUnic.setText(Integer.toString(dto.getCodUnic()));
+            this.textFieldTitlu.setText(dto.getTitlu());
+            this.textFieldISBN.setText(dto.getISBN());
+            this.textFieldAutor.setText(dto.getAutor());
+            this.textFieldEditura.setText(dto.getEditura());
+            this.textFieldAnAparitie.setText(Integer.toString(dto.getAnAparitie()));
+            this.textFieldStatus.setText(dto.getStatus());
+        }
     }
 
-//    private ExemplarCarte getFromDTO(ExemplarCarteDTO dto){
-//        return new ExemplarCarte(dto.getCodUnic(),dto.getRefer());
-//    }
 
     public void handleReturneaza(ActionEvent actionEvent) {
-        //ExemplarCarteDTO dto = this.tableExemplareBibliotecar.getSelectionModel().getSelectedItem();
-        int codAbonat = Integer.parseInt(this.textFieldCodAbonat.getText());
-        int codExemplar = Integer.parseInt(this.textFieldCodExemplar.getText());
-        this.service.returneaza(this.loggedInBibliotecar,codAbonat, codExemplar, LocalDate.now()); // TODO: check if deadline is not overdue
+        try {
+            int codAbonat = Integer.parseInt(this.textFieldCodAbonat.getText());
+            int codExemplar = Integer.parseInt(this.textFieldCodExemplar.getText());
+            this.service.returneaza(this.loggedInBibliotecar,codAbonat, codExemplar, LocalDate.now()); //if return deadline is overdue, then compute penalties
+        }
+        catch (NumberFormatException ignored){
+            CustomAlert.showErrorMessage(null, "Nu ati introdus corespunzator codurile de identificare!");
+        }
+        catch (OverdueError over){
+            CustomAlert.showErrorMessage(null, "Nu ati introdus corespunzator codurile de identificare!");
+        }
     }
 
     @Override

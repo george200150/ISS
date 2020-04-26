@@ -4,9 +4,7 @@ import Domain.Abonat;
 import Domain.Biblioteca;
 import Domain.Bibliotecar;
 import Domain.ExemplarCarte;
-import Repository.DBRepositoryAbonat;
-import Repository.DBRepositoryBibliotecar;
-import Repository.DBRepositoryImprumut;
+import Repository.*;
 import Utils.ChangeEventType;
 import Utils.ExemplarStateChangeEvent;
 import Utils.Observable;
@@ -26,6 +24,13 @@ public class MasterService implements Observable<ExemplarStateChangeEvent> {
     private DBRepositoryBibliotecar repoBibliotecar;
     private DBRepositoryImprumut repoImprumut;
 
+    public MasterService(Biblioteca repoBiblioteca, DBRepositoryAbonat repoAbonat, DBRepositoryBibliotecar repoBibliotecar, DBRepositoryImprumut repoImprumut) {
+        this.repoAbonat = repoAbonat;
+        this.repoBiblioteca = repoBiblioteca;
+        this.repoBibliotecar = repoBibliotecar;
+        this.repoImprumut = repoImprumut;
+    }
+
     public List<Object> findAngajatByCredentials(String username, String password) {
         if(username.length() == 0){
             // search for bibliotecar account
@@ -35,16 +40,22 @@ public class MasterService implements Observable<ExemplarStateChangeEvent> {
             return new ArrayList<Object>(List.of(bibliotecar, "bibliotecar"));
         }
         else{
-            int codAbonat = Integer.parseInt(username);
-            Abonat abonat = this.findAbonatByCredentials(codAbonat, password);
+            String codAbonatString = username;
+            Abonat abonat = this.findAbonatByCredentials(codAbonatString, password);
             if (abonat == null)
                 return new ArrayList<Object>(List.of("null", "null"));
             return new ArrayList<Object>(List.of(abonat, "abonat"));
         }
     }
 
-    private Abonat findAbonatByCredentials(int codAbonat, String password) {
-        return repoAbonat.findByCredentials(codAbonat, password);
+    private Abonat findAbonatByCredentials(String codAbonatString, String password) {
+        try{
+            int codAbonat = Integer.parseInt(codAbonatString);
+            return repoAbonat.findByCredentials(codAbonat, password);
+        }
+        catch (NumberFormatException ignored){
+            throw new UnavailableException("Codul abonatului a fost introdus necorespunzator!");
+        }
     }
 
     private Bibliotecar findBibliotecarByCredentials(String password) {
@@ -56,9 +67,9 @@ public class MasterService implements Observable<ExemplarStateChangeEvent> {
     }
 
     public void imprumuta(Abonat loggedInAbonat, ExemplarCarte exemplar, LocalDate start, LocalDate stop) {
-        //TODO: !!! validate + implement
-        this.repoBiblioteca.imprumuta(exemplar); // two lists - one of available exemplars and one of hired
-        this.repoImprumut.imprumuta(loggedInAbonat, exemplar, start, stop); // history of hired exemplars. these will not be deleted for statistical use... i guess ?
+        //TODO: !!! validate + implement (choose where to start the validation step)
+        this.repoBiblioteca.imprumuta(exemplar); // throws if already hired in the meantime
+        this.repoImprumut.imprumuta(loggedInAbonat, exemplar, start, stop); // history of hired exemplars
         notifyObservers(new ExemplarStateChangeEvent(ChangeEventType.IMPRUMUTAT, exemplar));
     }
 
@@ -67,17 +78,31 @@ public class MasterService implements Observable<ExemplarStateChangeEvent> {
     }
 
     public void returneaza(Bibliotecar loggedInBibliotecar, int codAbonat, int codExemplar, LocalDate now) {
-        ExemplarCarte exemplar = this.findExemplarById(codExemplar);
-        //TODO: !!! validate + implement
-        this.repoBiblioteca.returneaza(exemplar); // two lists - one of available exemplars and one of hired
-        Abonat loggedInAbonat = this.repoAbonat.findById(codAbonat);// TODO: check if information request is not redundant
-        this.repoImprumut.returneaza(loggedInAbonat, exemplar, now); // history of hired exemplars. these will not be deleted for statistical use... i guess ?
+        ExemplarCarte exemplar = this.findExemplarById(codExemplar); // TODO: THIS SHOULD BE THE POINT WHERE IT IS DECIDED IF THE EXEMPLAR HAS NOT BEEN FOUND (further validations become futile (_here_))
+        //TODO: change findExemplarById to find___Available___ExemplarById !!!
+
+        //TODO: ALREADY CHECKED IF EXEMPLAR EXISTS !!!//TODO: ALREADY CHECKED IF EXEMPLAR EXISTS !!!//TODO: ALREADY CHECKED IF EXEMPLAR EXISTS !!!
+        //TODO: ALREADY CHECKED IF EXEMPLAR EXISTS !!!//TODO: ALREADY CHECKED IF EXEMPLAR EXISTS !!!//TODO: ALREADY CHECKED IF EXEMPLAR EXISTS !!!
+        //TODO: ALREADY CHECKED IF EXEMPLAR EXISTS !!!//TODO: ALREADY CHECKED IF EXEMPLAR EXISTS !!!//TODO: ALREADY CHECKED IF EXEMPLAR EXISTS !!!
+
+
+        //TODO: !!! validate + implement (choose where to start the validation step)
+        this.repoBiblioteca.returneaza(exemplar);
+        Abonat loggedInAbonat = this.repoAbonat.findById(codAbonat);
+        int delay = this.repoImprumut.returneaza(loggedInAbonat, exemplar, now); // history of hired exemplars.
         notifyObservers(new ExemplarStateChangeEvent(ChangeEventType.RETURNAT, exemplar));
+        if (delay > 0)
+            throw new OverdueError("penalties: " + 1 + " week overdue!");
     }
 
     private ExemplarCarte findExemplarById(int codExemplar) {
         return repoBiblioteca.findExemplarById(codExemplar);
     }
+
+    public boolean esteExemplarInchiriat(ExemplarCarte exem) {
+        return this.repoBiblioteca.esteExemplarInchiriat(exem);
+    }
+
 
 
     @Override
@@ -94,4 +119,5 @@ public class MasterService implements Observable<ExemplarStateChangeEvent> {
     public void notifyObservers(ExemplarStateChangeEvent t) {
         observers.forEach(x -> x.update(t));
     }
+
 }

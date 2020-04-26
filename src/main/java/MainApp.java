@@ -1,4 +1,9 @@
+import Domain.*;
+import MVC.AbonatController;
 import MVC.LoginController;
+import Repository.DBRepositoryAbonat;
+import Repository.DBRepositoryBibliotecar;
+import Repository.DBRepositoryImprumut;
 import Service.MasterService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,6 +12,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainApp extends Application {
 
@@ -53,7 +60,25 @@ public class MainApp extends Application {
 //        motivationService = new MotivationService(motivationRepository);
 
 //        masterService = new MasterService(profesorService, studentService, temaService, notaService, motivationService);
-        masterService = new MasterService();
+        Carte carte = new Carte("ION", "isbn:1234RO","Marcel Avram", "Polina", 1969);
+        ExemplarCarte exemplarCarte1 = new ExemplarCarte(1, carte);
+        ExemplarCarte exemplarCarte2 = new ExemplarCarte(2, carte);
+        ExemplarCarte exemplarCarte3 = new ExemplarCarte(3, carte);
+        ArrayList<ExemplarCarte> exemplare = new ArrayList<ExemplarCarte>(List.of(exemplarCarte1, exemplarCarte2, exemplarCarte3));
+
+        Abonat abonat1 = new Abonat("1990324240024", "Gheorghe Vasile", "Strada limbii", "08322323", 1, "1");
+        Abonat abonat2 = new Abonat("1990324240024", "Gheorghe Vasile", "Strada limbii", "08322323", 2, "1");
+        Abonat abonat3 = new Abonat("1990324240024", "Gheorghe Vasile", "Strada limbii", "08322323", 3, "1");
+        ArrayList<Abonat> abonati = new ArrayList<Abonat>(List.of(abonat1, abonat2, abonat3));
+
+
+        Biblioteca repoBiblioteca = new Biblioteca(abonati,exemplare,new Bibliotecar()); //TODO: create constructor !!!
+        DBRepositoryAbonat repoAbonat = new DBRepositoryAbonat(); //TODO: create constructor !!!
+        DBRepositoryBibliotecar repoBibliotecar = new DBRepositoryBibliotecar(); //TODO: create constructor !!!
+        DBRepositoryImprumut repoImprumut = new DBRepositoryImprumut(); //TODO: create constructor !!!
+
+
+        masterService = new MasterService(repoBiblioteca, repoAbonat, repoBibliotecar, repoImprumut);
 
         init1(primaryStage);
         primaryStage.show();
@@ -64,12 +89,12 @@ public class MainApp extends Application {
     private void init1(Stage primaryStage) throws IOException {
 
         FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("login.fxml"));
+        fxmlLoader.setLocation(getClass().getResource("/views/login.fxml"));
         AnchorPane gradeLayout = fxmlLoader.load();
+
         primaryStage.setScene(new Scene(gradeLayout));
 
         LoginController loginChoiceController = fxmlLoader.getController();
         loginChoiceController.setService(masterService, primaryStage);
-
     }
 }
