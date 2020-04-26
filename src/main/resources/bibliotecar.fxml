@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<!--fx:controller="Bibliotecar"-->
+
+<AnchorPane prefHeight="561.0" prefWidth="958.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MVC.BibliotecarController">
+   <children>
+      <Label layoutX="49.0" layoutY="81.0" text="Vizualizare lista exemplare" />
+      <TableView fx:id="tableExemplareBibliotecar" layoutX="49.0" layoutY="119.0" onMouseClicked="#handleMoreDetails" prefHeight="219.0" prefWidth="571.0">
+        <columns>
+            <TableColumn fx:id="tableExemplareBibliotecarColumnCodUnic" prefWidth="75.0" text="Cod Unic" />
+          <TableColumn fx:id="tableExemplareBibliotecarColumnTitlu" prefWidth="107.0" text="Titlu" />
+            <TableColumn fx:id="tableExemplareBibliotecarColumnISBN" prefWidth="93.0" text="ISBN" />
+            <TableColumn fx:id="tableExemplareBibliotecarColumnAutor" prefWidth="62.0" text="Autor" />
+            <TableColumn fx:id="tableExemplareBibliotecarColumnEditura" prefWidth="123.0" text="Editura" />
+            <TableColumn fx:id="tableExemplareBibliotecarColumnAnAparitie" prefWidth="103.0" text="An Aparitie" />
+          <TableColumn prefWidth="82.0" text="Stare" />
+        </columns>
+      </TableView>
+      <GridPane layoutX="633.0" layoutY="119.0" prefHeight="184.0" prefWidth="277.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="129.0" minWidth="10.0" prefWidth="69.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="217.0" minWidth="10.0" prefWidth="204.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Titlu:" GridPane.rowIndex="1" />
+            <Label text="ISBN:" GridPane.rowIndex="2" />
+            <Label text="Autor:" GridPane.rowIndex="3" />
+            <Label text="Editura:" GridPane.rowIndex="4" />
+            <Label text="An aparitie:" GridPane.rowIndex="5" />
+            <TextField fx:id="textFieldTitlu" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="textFieldISBN" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="textFieldAutor" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="textFieldEditura" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="textFieldAnAparitie" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label text="Cod unic:" />
+            <TextField fx:id="textFieldCodUnic" GridPane.columnIndex="1" />
+         </children>
+      </GridPane>
+      <ButtonBar layoutX="633.0" layoutY="313.0" prefHeight="25.0" prefWidth="277.0">
+        <buttons>
+            <Button mnemonicParsing="false" text="Adauga" />
+            <Button mnemonicParsing="false" text="Sterge" />
+            <Button mnemonicParsing="false" text="Modifica" />
+        </buttons>
+      </ButtonBar>
+      <Label fx:id="labelBibliotecar" layoutX="49.0" layoutY="57.0" text="bibliotecar: -bib-" />
+      <Button layoutX="148.0" layoutY="439.0" mnemonicParsing="false" onAction="#handleReturneaza" text="Returnare" />
+      <TextField fx:id="textFieldCodAbonat" layoutX="148.0" layoutY="364.0" prefWidth="228.0" />
+      <TextField fx:id="textFieldCodExemplar" layoutX="148.0" layoutY="401.0" prefWidth="228.0" />
+      <Label layoutX="71.0" layoutY="368.0" text="cod abonat:" />
+      <Label layoutX="14.0" layoutY="405.0" text="cod exemplar returnat:" />
+   </children>
+</AnchorPane>
