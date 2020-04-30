@@ -1,15 +1,40 @@
 package Domain;
 
 import Repository.UnavailableException;
+import Repository.postgres.ImprumutDataBaseRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class Biblioteca {
     private List<Abonat> abonati;
-    private List<ExemplarCarte> exemplareDisponibile;
-    private List<ExemplarCarte> exemplareInchiriate;
+    private List<ExemplarCarte> exemplareDisponibile; // aici pun restul
+    private List<ExemplarCarte> exemplareInchiriate; //TODO: trebuie ca la startup sa iau din logul de imprumuturi toate cartile care nu sunt returnate si sa le pun aici
     private Bibliotecar bibliotecar;
+
+    public void setUpExemplare(ImprumutDataBaseRepository repoI){
+        List<Imprumut> allData = StreamSupport.stream(repoI.findAll().spliterator(), false).collect(Collectors.toList());
+        List<Integer> disponibile = allData.stream().filter(Imprumut::isaFostReturnat).map(Imprumut::getExemplar).collect(Collectors.toList());
+        List<ExemplarCarte> toBeRemoved = new ArrayList<>();
+        for (ExemplarCarte exemplar: exemplareDisponibile) {
+            boolean found = false;
+            for(int cod : disponibile){
+                if(exemplar.getCodUnic() == cod){
+                    found = true;
+                    break;
+                }
+            }
+            if(!found){
+                toBeRemoved.add(exemplar); // => invalidated iterator
+                exemplareInchiriate.add(exemplar);
+            }
+        }
+        for (ExemplarCarte exemplar: toBeRemoved) {
+            this.exemplareDisponibile.remove(exemplar);
+        }
+    }
 
     public Biblioteca(List<Abonat> abonati, List<ExemplarCarte> exemplare, Bibliotecar bibliotecar) {
         this.abonati = abonati;
@@ -80,9 +105,10 @@ public class Biblioteca {
 
     private void deleteExemplarDisponibil(ExemplarCarte exemplar) {
         for (ExemplarCarte ex : this.exemplareDisponibile) {
-            if(ex.getCodUnic() == exemplar.getCodUnic())
+            if (ex.getCodUnic() == exemplar.getCodUnic()) {
                 this.exemplareDisponibile.remove(ex);
                 break;
+            }
         }
     }
 
@@ -99,11 +125,11 @@ public class Biblioteca {
     }
 
     private void deleteExemplarInchiriat(ExemplarCarte exemplar) {
-        for (ExemplarCarte ex : this.exemplareInchiriate) {
-            if(ex.getCodUnic() == exemplar.getCodUnic())
+        for (ExemplarCarte ex : this.exemplareInchiriate)
+            if (ex.getCodUnic() == exemplar.getCodUnic()) {
                 this.exemplareInchiriate.remove(ex);
-            break;
-        }
+                break;
+            }
     }
 
     public boolean esteExemplarInchiriat(ExemplarCarte exem) {

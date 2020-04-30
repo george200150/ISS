@@ -101,39 +101,45 @@ public class AbonatController implements Observer<ExemplarStateChangeEvent> {
 
     public void handleMoreDetails(MouseEvent mouseEvent) {
         ExemplarCarteDTO dto = this.tableExemplareAbonat.getSelectionModel().getSelectedItem(); // TODO: dto must a @NotNull object (hopefully...)
-        this.textFieldTitlu.setText(dto.getTitlu());
-        this.textFieldISBN.setText(dto.getISBN());
-        this.textFieldAutor.setText(dto.getAutor());
-        this.textFieldEditura.setText(dto.getEditura());
-        this.textFieldAnAparitie.setText(Integer.toString(dto.getAnAparitie()));
+        if (dto != null) {
+            this.textFieldTitlu.setText(dto.getTitlu());
+            this.textFieldISBN.setText(dto.getISBN());
+            this.textFieldAutor.setText(dto.getAutor());
+            this.textFieldEditura.setText(dto.getEditura());
+            this.textFieldAnAparitie.setText(Integer.toString(dto.getAnAparitie()));
+        }
     }
 
 
     public void handleImprumuta(ActionEvent actionEvent) {
         ExemplarCarteDTO dto = this.tableExemplareAbonat.getSelectionModel().getSelectedItem();
-        // open new window for special hiring form
-        try {
-            // create a new stage for the popup dialog.
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/views/imprumut.fxml"));
+        if (dto == null) {
+            CustomAlert.showErrorMessage(this.dialogStage, "Nu ati selectat un exemplar!");
+        } else {
+            // open new window for special hiring form
+            try {
+                // create a new stage for the popup dialog.
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("/views/imprumut.fxml"));
 
-            AnchorPane root = (AnchorPane) loader.load();
+                AnchorPane root = (AnchorPane) loader.load();
 
-            // Create the dialog Stage.
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Log In Abonat");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            Scene scene = new Scene(root);
-            dialogStage.setScene(scene);
+                // Create the dialog Stage.
+                Stage dialogStage = new Stage();
+                dialogStage.setTitle("Log In Abonat");
+                dialogStage.initModality(Modality.WINDOW_MODAL);
+                Scene scene = new Scene(root);
+                dialogStage.setScene(scene);
 
-            ImprumutHandlerController imprumutHandlerController = loader.getController();
-            imprumutHandlerController.setService(this.service, this.dialogStage, dialogStage, dto.getExemplarCarte(), this.loggedInAbonat);
+                ImprumutHandlerController imprumutHandlerController = loader.getController();
+                imprumutHandlerController.setService(this.service, this.dialogStage, dialogStage, dto.getExemplarCarte(), this.loggedInAbonat);
 
-            this.dialogStage.hide(); // TODO: hide here and show in opened window on close.
-            dialogStage.show();
+                this.dialogStage.hide(); // TODO: hide here and show in opened window on close.
+                dialogStage.show();
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

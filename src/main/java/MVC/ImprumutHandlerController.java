@@ -11,6 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 //import java.time.format.DateTimeFormatter;
 
 public class ImprumutHandlerController {
@@ -29,6 +31,16 @@ public class ImprumutHandlerController {
     private Stage parentStage;
     private MasterService service;
 
+    //TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO:
+    //TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO:
+    //TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO:
+
+    // TREBUIE SA FIE ACTUALIZATA STAREA DE DISPONIBILITATE A EXEMPLARULUI sau TREBUIE VERIFICAT INAINTE DE INCHIRIERE DACA MAI ERA DISPONIBIL (a doua e mai ok)
+
+    //TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO:
+    //TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO:
+    //TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO:
+
     public void setService(MasterService service, Stage parentStage, Stage thisStage, ExemplarCarte exemplar, Abonat loggedInAbonat) {
         this.service = service;
         this.parentStage = parentStage;
@@ -38,11 +50,14 @@ public class ImprumutHandlerController {
 
         this.textFieldExemplar.setText(exemplar.toString());
         this.datePickerStart.setValue(LocalDate.now());
-        this.datePickerStart.setValue(LocalDate.now().plusWeeks(2));
+        this.datePickerStop.setValue(LocalDate.now().plusWeeks(2));
     }
 
     public void handleInchiriaza(ActionEvent actionEvent) {
-        this.service.imprumuta(loggedInAbonat, exemplarCarte, datePickerStart.getValue(), datePickerStop.getValue());
+        Date start = Date.from(datePickerStart.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date end = Date.from(datePickerStop.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        this.service.imprumuta(loggedInAbonat, exemplarCarte, start, end);
         this.parentStage.show();
         this.thisStage.close();
         CustomAlert.showMessage(this.thisStage, Alert.AlertType.CONFIRMATION, "confirmare", "Ati imprumutat cu succes exemplarul!");

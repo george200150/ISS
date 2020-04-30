@@ -10,8 +10,8 @@ import Utils.ExemplarStateChangeEvent;
 import Utils.Observable;
 import Utils.Observer;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 // class A ; class B extends A ; B b = ..(B).. new A();  MUST HAVE CAST TO class B, BUT it can THROW ClassCastException
@@ -66,7 +66,7 @@ public class MasterService implements Observable<ExemplarStateChangeEvent> {
         return repoBiblioteca.getAllExisting();
     }
 
-    public void imprumuta(Abonat loggedInAbonat, ExemplarCarte exemplar, LocalDate start, LocalDate stop) {
+    public void imprumuta(Abonat loggedInAbonat, ExemplarCarte exemplar, Date start, Date stop) {
         //TODO: !!! validate + implement (choose where to start the validation step)
         this.repoBiblioteca.imprumuta(exemplar); // throws if already hired in the meantime
         this.repoImprumut.imprumuta(loggedInAbonat, exemplar, start, stop); // history of hired exemplars
@@ -77,8 +77,10 @@ public class MasterService implements Observable<ExemplarStateChangeEvent> {
         return repoBiblioteca.getAllAvailable();
     }
 
-    public void returneaza(Bibliotecar loggedInBibliotecar, int codAbonat, int codExemplar, LocalDate now) {
-        ExemplarCarte exemplar = this.findExemplarById(codExemplar); // TODO: THIS SHOULD BE THE POINT WHERE IT IS DECIDED IF THE EXEMPLAR HAS NOT BEEN FOUND (further validations become futile (_here_))
+
+    //.. not implemented yet
+    public void returneaza(Bibliotecar loggedInBibliotecar, int codAbonat, int codExemplar, Date now) {
+        ExemplarCarte exemplar = this.findExemplarInchiriatById(codExemplar); // TODO: THIS SHOULD BE THE POINT WHERE IT IS DECIDED IF THE EXEMPLAR HAS NOT BEEN FOUND (further validations become futile (_here_))
         //TODO: change findExemplarById to find___Available___ExemplarById !!!
 
         //TODO: ALREADY CHECKED IF EXEMPLAR EXISTS !!!//TODO: ALREADY CHECKED IF EXEMPLAR EXISTS !!!//TODO: ALREADY CHECKED IF EXEMPLAR EXISTS !!!
@@ -92,12 +94,19 @@ public class MasterService implements Observable<ExemplarStateChangeEvent> {
         int delay = this.repoImprumut.returneaza(loggedInAbonat, exemplar, now); // history of hired exemplars.
         notifyObservers(new ExemplarStateChangeEvent(ChangeEventType.RETURNAT, exemplar));
         if (delay > 0)
-            throw new OverdueError("penalties: " + 1 + " week overdue!");
+            throw new OverdueError("penalties: " + delay + " week overdue!");
     }
 
     private ExemplarCarte findExemplarById(int codExemplar) {
-        return repoBiblioteca.findExemplarById(codExemplar);
+        //return repoBiblioteca.findExemplarById(codExemplar);
+        return null;
     }
+
+    private ExemplarCarte findExemplarInchiriatById(int codExemplar) {
+        return repoBiblioteca.findExemplarInchiriatById(codExemplar);
+    }
+
+
 
     public boolean esteExemplarInchiriat(ExemplarCarte exem) {
         return this.repoBiblioteca.esteExemplarInchiriat(exem);

@@ -1,16 +1,20 @@
 package Domain;
 
-import java.time.LocalDate;
+
+import java.util.Date;
 
 public class Imprumut {
     private int codUnicImprumut;
-    private LocalDate dataEfectuare;
-    private LocalDate dataRestituire;
+    private Date dataEfectuare;
+    private Date dataRestituire;
     private boolean aFostReturnat;
-    private Abonat creator;
-    private ExemplarCarte exemplar;
+    //private Abonat creator;
+    //private ExemplarCarte exemplar;
+    private int creator;
+    private int exemplar;
 
-    public Imprumut(int codUnicImprumut, LocalDate dataEfectuare, LocalDate dataRestituire, boolean aFostReturnat, Abonat creator, ExemplarCarte exemplar) {
+    //public Imprumut(int codUnicImprumut, Date dataEfectuare, Date dataRestituire, boolean aFostReturnat, Abonat creator, ExemplarCarte exemplar) {
+    public Imprumut(int codUnicImprumut, Date dataEfectuare, Date dataRestituire, boolean aFostReturnat, int creator, int exemplar) {
         this.codUnicImprumut = codUnicImprumut;
         this.dataEfectuare = dataEfectuare;
         this.dataRestituire = dataRestituire;
@@ -27,19 +31,19 @@ public class Imprumut {
         this.codUnicImprumut = codUnicImprumut;
     }
 
-    public LocalDate getDataEfectuare() {
+    public Date getDataEfectuare() {
         return dataEfectuare;
     }
 
-    public void setDataEfectuare(LocalDate dataEfectuare) {
+    public void setDataEfectuare(Date dataEfectuare) {
         this.dataEfectuare = dataEfectuare;
     }
 
-    public LocalDate getDataRestituire() {
+    public Date getDataRestituire() {
         return dataRestituire;
     }
 
-    public void setDataRestituire(LocalDate dataRestituire) {
+    public void setDataRestituire(Date dataRestituire) {
         this.dataRestituire = dataRestituire;
     }
 
@@ -51,19 +55,35 @@ public class Imprumut {
         this.aFostReturnat = aFostReturnat;
     }
 
-    public Abonat getCreator() {
+//    public Abonat getCreator() {
+//        return creator;
+//    }
+//
+//    public void setCreator(Abonat creator) {
+//        this.creator = creator;
+//    }
+//
+//    public ExemplarCarte getExemplar() {
+//        return exemplar;
+//    }
+//
+//    public void setExemplar(ExemplarCarte exemplar) {
+//        this.exemplar = exemplar;
+//    }
+
+    public int getCreator() {
         return creator;
     }
 
-    public void setCreator(Abonat creator) {
+    public void setCreator(int creator) {
         this.creator = creator;
     }
 
-    public ExemplarCarte getExemplar() {
+    public int getExemplar() {
         return exemplar;
     }
 
-    public void setExemplar(ExemplarCarte exemplar) {
+    public void setExemplar(int exemplar) {
         this.exemplar = exemplar;
     }
 }

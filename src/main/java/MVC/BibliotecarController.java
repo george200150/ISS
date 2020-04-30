@@ -4,6 +4,7 @@ import Domain.Bibliotecar;
 import Domain.ExemplarCarte;
 import Domain.ExemplarCarteDTOWithStatus;
 import Repository.OverdueError;
+import Repository.UnavailableException;
 import Service.MasterService;
 import Utils.ExemplarStateChangeEvent;
 import Utils.Observer;
@@ -20,6 +21,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -129,13 +132,17 @@ public class BibliotecarController implements Observer<ExemplarStateChangeEvent>
         try {
             int codAbonat = Integer.parseInt(this.textFieldCodAbonat.getText());
             int codExemplar = Integer.parseInt(this.textFieldCodExemplar.getText());
-            this.service.returneaza(this.loggedInBibliotecar,codAbonat, codExemplar, LocalDate.now()); //if return deadline is overdue, then compute penalties
+            Date now = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            this.service.returneaza(this.loggedInBibliotecar,codAbonat, codExemplar, now); //if return deadline is overdue, then compute penalties
         }
         catch (NumberFormatException ignored){
             CustomAlert.showErrorMessage(null, "Nu ati introdus corespunzator codurile de identificare!");
         }
         catch (OverdueError over){
-            CustomAlert.showErrorMessage(null, "Nu ati introdus corespunzator codurile de identificare!");
+            CustomAlert.showErrorMessage(null, over.getMessage());
+        }
+        catch (UnavailableException unavailable){
+            CustomAlert.showErrorMessage(null, unavailable.getMessage());
         }
     }
 

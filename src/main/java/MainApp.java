@@ -4,6 +4,10 @@ import MVC.LoginController;
 import Repository.DBRepositoryAbonat;
 import Repository.DBRepositoryBibliotecar;
 import Repository.DBRepositoryImprumut;
+import Repository.postgres.AbonatDataBaseRepository;
+import Repository.postgres.BibliotecarDataBaseRepository;
+import Repository.postgres.ImprumutDataBaseRepository;
+import Repository.postgres.JDBCInvariant;
 import Service.MasterService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +18,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class MainApp extends Application {
 
@@ -60,6 +65,16 @@ public class MainApp extends Application {
 //        motivationService = new MotivationService(motivationRepository);
 
 //        masterService = new MasterService(profesorService, studentService, temaService, notaService, motivationService);
+        Properties properties = new Properties();
+        try {
+            properties.load(JDBCInvariant.class.getResourceAsStream("/bd.config"));
+            properties.list(System.out);
+        } catch (IOException e) {
+            System.err.println("Cannot find bd.config " + e);
+            return;
+        }
+        new JDBCInvariant(properties); // initialize static fields in object before using anything from app logic
+
         Carte carte = new Carte("ION", "isbn:1234RO","Marcel Avram", "Polina", 1969);
         ExemplarCarte exemplarCarte1 = new ExemplarCarte(1, carte);
         ExemplarCarte exemplarCarte2 = new ExemplarCarte(2, carte);
@@ -71,11 +86,25 @@ public class MainApp extends Application {
         Abonat abonat3 = new Abonat("1990324240024", "Gheorghe Vasile", "Strada limbii", "08322323", 3, "1");
         ArrayList<Abonat> abonati = new ArrayList<Abonat>(List.of(abonat1, abonat2, abonat3));
 
+        AbonatDataBaseRepository repoA = new AbonatDataBaseRepository();
+        //repoA.save(abonat1);
+        //repoA.save(abonat2);
+        //repoA.save(abonat3);
 
-        Biblioteca repoBiblioteca = new Biblioteca(abonati,exemplare,new Bibliotecar()); //TODO: create constructor !!!
-        DBRepositoryAbonat repoAbonat = new DBRepositoryAbonat(); //TODO: create constructor !!!
-        DBRepositoryBibliotecar repoBibliotecar = new DBRepositoryBibliotecar(); //TODO: create constructor !!!
-        DBRepositoryImprumut repoImprumut = new DBRepositoryImprumut(); //TODO: create constructor !!!
+        Bibliotecar bibliotecar1 = new Bibliotecar(0,"0");
+        BibliotecarDataBaseRepository repoB = new BibliotecarDataBaseRepository();
+        //repoB.save(bibliotecar1);
+
+
+        ImprumutDataBaseRepository repoI = new ImprumutDataBaseRepository();
+
+        DBRepositoryAbonat repoAbonat = new DBRepositoryAbonat(repoA); //TODO: create constructor !!!
+        DBRepositoryBibliotecar repoBibliotecar = new DBRepositoryBibliotecar(repoB); //TODO: create constructor !!!
+        DBRepositoryImprumut repoImprumut = new DBRepositoryImprumut(repoI); //TODO: create constructor !!!
+
+
+        Biblioteca repoBiblioteca = new Biblioteca(abonati,exemplare,bibliotecar1); //TODO: create constructor !!!
+        repoBiblioteca.setUpExemplare(repoI);
 
 
         masterService = new MasterService(repoBiblioteca, repoAbonat, repoBibliotecar, repoImprumut);

@@ -1,14 +1,20 @@
 package Repository;
 
 import Domain.Abonat;
+import Repository.postgres.AbonatDataBaseRepository;
 
 public class DBRepositoryAbonat {
+    AbonatDataBaseRepository repo;
+
+    public DBRepositoryAbonat(AbonatDataBaseRepository repo) {
+        this.repo = repo;
+    }
+
     public Abonat findByCredentials(int codAbonat, String password) {
-        return new Abonat("1234","da","avem","este",1111,"1");
-        // TODO: return null; implement this !!!
+        return repo.findClientByCredentials(codAbonat,password);
     }
 
     public Abonat findById(int codAbonat) {
-        return null;
+        return repo.findOne(codAbonat);
     }
 }
