@@ -83,7 +83,7 @@ public class DBRepositoryImprumut {
         return delay;
     }
 
-    private boolean checkIfExemplarIsDisponibil(ExemplarCarte exemplar){
+    public boolean checkIfExemplarIsDisponibil(ExemplarCarte exemplar){
         List<Imprumut> fromDBresult = StreamSupport
                 .stream(repo.findAll().spliterator(), false)
                 .filter(x -> x.getExemplar() == exemplar.getCodUnic())

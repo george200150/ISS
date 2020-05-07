@@ -11,7 +11,7 @@ public class DBRepositoryBibliotecar {
         this.repo = repo;
     }
 
-    public Bibliotecar findByCredentials(String password) {
-        return repo.findClientByCredentials(password);
+    public Bibliotecar findByCredentials(int cod, String password) {
+        return repo.findClientByCredentials(cod, password);
     }
 }

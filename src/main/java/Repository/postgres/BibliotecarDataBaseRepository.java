@@ -19,15 +19,15 @@ public class BibliotecarDataBaseRepository implements CrudRepository<Integer, Bi
         //TODO: this.validator = validator;
     }
 
-    public Bibliotecar findClientByCredentials(String password) throws IllegalArgumentException {
+    public Bibliotecar findClientByCredentials(int codUnic, String password) throws IllegalArgumentException {
         if (password == null) {
             throw new IllegalArgumentException("PAROLA NU POATE FI NULL");
         }
         try {
-            ResultSet data = connection.createStatement().executeQuery("SELECT * FROM \"Bibliotecari\"  WHERE \"parola\" =" + "\'" + password + "\'");
+            ResultSet data = connection.createStatement().executeQuery("SELECT * FROM \"Bibliotecari\"  WHERE \"codUnic\" =" + "\'" + codUnic + "\' AND parola =" + "\'" + password + "\'");
             boolean existent = data.next();
             if(existent){
-                int codUnic = data.getInt(1);
+                //int codUnic = data.getInt(1);
                 String parola = data.getString(2);
 
                 Bibliotecar bibliotecar = new Bibliotecar(codUnic, parola);

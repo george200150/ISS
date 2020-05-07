@@ -45,7 +45,6 @@ public class AbonatController implements Observer<ExemplarStateChangeEvent> {
 
     @FXML
     private TableView<ExemplarCarteDTO> tableExemplareAbonat;
-
     @FXML
     private TableColumn<ExemplarCarteDTO, String> tableExemplareAbonatColumnTitlu;
     @FXML
@@ -73,11 +72,11 @@ public class AbonatController implements Observer<ExemplarStateChangeEvent> {
     }
 
     private void initModel() {
-
-        Iterable<ExemplarCarte> grades = service.getAllExemplareDisponibile(); // doar exemplarele ce pot fi inchiriate se vor afisa.
-        List<ExemplarCarte> gradeList = StreamSupport.stream(grades.spliterator(), false)
+        // doar exemplarele ce pot fi inchiriate se vor afisa.
+        Iterable<ExemplarCarte> grades = service.getAllExemplareDisponibile();
+        List<ExemplarCarte> gradeList = StreamSupport
+                .stream(grades.spliterator(), false)
                 .collect(Collectors.toList());
-
         model.setAll(convertGradeToDTO(gradeList));
     }
 
@@ -134,7 +133,7 @@ public class AbonatController implements Observer<ExemplarStateChangeEvent> {
                 ImprumutHandlerController imprumutHandlerController = loader.getController();
                 imprumutHandlerController.setService(this.service, this.dialogStage, dialogStage, dto.getExemplarCarte(), this.loggedInAbonat);
 
-                this.dialogStage.hide(); // !!! hide here and show in opened window on close.
+                this.dialogStage.hide(); // hide the window here and create the new form; do the opposite on the form in order to unhide the window.
                 dialogStage.show();
 
             } catch (IOException e) {

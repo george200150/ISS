@@ -30,16 +30,6 @@ public class ImprumutHandlerController {
     private Stage parentStage;
     private MasterService service;
 
-    //TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO:
-    //TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO:
-    //TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO:
-
-    // TREBUIE SA FIE ACTUALIZATA STAREA DE DISPONIBILITATE A EXEMPLARULUI sau TREBUIE VERIFICAT INAINTE DE INCHIRIERE DACA MAI ERA DISPONIBIL (a doua e mai ok)
-
-    //TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO:
-    //TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO:
-    //TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO://TODO:
-
     public void setService(MasterService service, Stage parentStage, Stage thisStage, ExemplarCarte exemplar, Abonat loggedInAbonat) {
         this.service = service;
         this.parentStage = parentStage;
@@ -52,11 +42,11 @@ public class ImprumutHandlerController {
         this.datePickerStop.setValue(LocalDate.now().plusWeeks(2));
     }
 
-    public void handleInchiriaza(ActionEvent actionEvent) {
+    public void handleImprumuta(ActionEvent actionEvent) {
         try {
             Date start = Date.from(datePickerStart.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
             Date end = Date.from(datePickerStop.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-
+            // verificarea disponibilitatii exemplarului se verifica in urmatorul layer.
             this.service.imprumuta(loggedInAbonat, exemplarCarte, start, end);
             this.parentStage.show();
             this.thisStage.close();

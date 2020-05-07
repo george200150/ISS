@@ -1,6 +1,7 @@
 package MVC;
 
 import Domain.Bibliotecar;
+import Domain.Carte;
 import Domain.ExemplarCarte;
 import Domain.ExemplarCarteDTOWithStatus;
 import Repository.OverdueError;
@@ -12,10 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -76,29 +74,38 @@ public class BibliotecarController implements Observer<ExemplarStateChangeEvent>
     private ObservableList<ExemplarCarteDTOWithStatus> model = FXCollections.observableArrayList();
 
 
-    public void handleAdauga(ActionEvent actionEvent) {
-        //TODO: create table pentru carti
-    }
-
-    public void handleSterge(ActionEvent actionEvent) {
-        ExemplarCarteDTOWithStatus dto = this.tableExemplareBibliotecar.getSelectionModel().getSelectedItem();
-        if(dto != null){
-            this.service.deleteExemmplar(dto.getCodUnic());
+    public void handleOpereaza(ActionEvent actionEvent){ // generic method for any CRUD operation
+        /**
+         * "tipOperatie" specifies the following:
+         * INSERT: all fields from the "exemplar" object are necessary. - just insert
+         * SELECT: we need only the id from the "exemplar" object. - search by id and return the found object
+         * UPDATE: all fields from the "exemplar" object are necessary. - search by id and update the found object
+         * DELETE: we need only the id from the "exemplar" object. - search by id and delete the found object
+         */
+        int id = Integer.parseInt(textFieldCodUnic.getText());
+        String titlu = textFieldTitlu.getText();
+        String ISBN = textFieldISBN.getText();
+        String autor = textFieldAutor.getText();
+        String editura = textFieldEditura.getText();
+        int anAparitie = Integer.parseInt(textFieldAnAparitie.getText());
+        Carte carte = new Carte(titlu,ISBN,autor,editura,anAparitie);
+        ExemplarCarte exemplar = new ExemplarCarte(id,carte);
+        String tipOperatie = "INSERT/SELECT/UPDATE/DELETE";
+        Button pressedButton = (Button) actionEvent.getSource();
+        String text = pressedButton.getText(); // would work better with getId()
+        switch (text) {
+            case "Adauga":
+                tipOperatie = "INSERT";
+                break;
+            case "Modifica":
+                tipOperatie = "UPDATE";
+                break;
+            case "Sterge":
+                tipOperatie = "DELETE";
+                break;
         }
-        else{
-            CustomAlert.showErrorMessage(this.dialogStage, "Intai, alegeti un exemplar din lista!");
-        }
-    }
-
-    public void handleModifica(ActionEvent actionEvent) {
-        ExemplarCarteDTOWithStatus dto = this.tableExemplareBibliotecar.getSelectionModel().getSelectedItem();
-        if(dto != null){
-            //new ExemplarCarte(coUnic,Carte)
-            //this.service.updateExemmplar(dto.getCodUnic(),);
-        }
-        else{
-            CustomAlert.showErrorMessage(this.dialogStage, "Intai, alegeti un exemplar din lista!");
-        }
+        this.service.opereaza(exemplar, tipOperatie); // may throw
+        this.service.getAllExemplareExistente(); // get updated the state of the database
     }
 
 
@@ -112,7 +119,6 @@ public class BibliotecarController implements Observer<ExemplarStateChangeEvent>
     }
 
     private void initModel() {
-
         Iterable<ExemplarCarte> grades = service.getAllExemplareExistente(); // toate exemplarele se vor afisa.
         List<ExemplarCarte> gradeList = StreamSupport.stream(grades.spliterator(), false)
                 .collect(Collectors.toList());

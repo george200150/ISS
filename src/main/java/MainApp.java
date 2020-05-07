@@ -1,13 +1,9 @@
 import Domain.*;
-import MVC.AbonatController;
 import MVC.LoginController;
 import Repository.DBRepositoryAbonat;
 import Repository.DBRepositoryBibliotecar;
 import Repository.DBRepositoryImprumut;
-import Repository.postgres.AbonatDataBaseRepository;
-import Repository.postgres.BibliotecarDataBaseRepository;
-import Repository.postgres.ImprumutDataBaseRepository;
-import Repository.postgres.JDBCInvariant;
+import Repository.postgres.*;
 import Service.MasterService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -43,12 +39,17 @@ public class MainApp extends Application {
         ExemplarCarte exemplarCarte1 = new ExemplarCarte(1, carte);
         ExemplarCarte exemplarCarte2 = new ExemplarCarte(2, carte);
         ExemplarCarte exemplarCarte3 = new ExemplarCarte(3, carte);
-        ArrayList<ExemplarCarte> exemplare = new ArrayList<ExemplarCarte>(List.of(exemplarCarte1, exemplarCarte2, exemplarCarte3));
+        //ArrayList<ExemplarCarte> exemplare = new ArrayList<ExemplarCarte>(List.of(exemplarCarte1, exemplarCarte2, exemplarCarte3));
 
-        Abonat abonat1 = new Abonat("1990324240024", "Gheorghe Vasile", "Strada limbii", "08322323", 1, "1");
+        ExemplarDataBaseRepository repoE = new ExemplarDataBaseRepository();
+        /*repoE.save(exemplarCarte1);
+        repoE.save(exemplarCarte2);
+        repoE.save(exemplarCarte3);*/
+
+        /*Abonat abonat1 = new Abonat("1990324240024", "Gheorghe Vasile", "Strada limbii", "08322323", 1, "1");
         Abonat abonat2 = new Abonat("1990324240024", "Gheorghe Vasile", "Strada limbii", "08322323", 2, "1");
         Abonat abonat3 = new Abonat("1990324240024", "Gheorghe Vasile", "Strada limbii", "08322323", 3, "1");
-        ArrayList<Abonat> abonati = new ArrayList<Abonat>(List.of(abonat1, abonat2, abonat3));
+        ArrayList<Abonat> abonati = new ArrayList<Abonat>(List.of(abonat1, abonat2, abonat3));*/
 
         AbonatDataBaseRepository repoA = new AbonatDataBaseRepository();
         //repoA.save(abonat1);
@@ -67,8 +68,7 @@ public class MainApp extends Application {
         DBRepositoryImprumut repoImprumut = new DBRepositoryImprumut(repoI);
 
 
-        Biblioteca repoBiblioteca = new Biblioteca(abonati,exemplare,bibliotecar1);
-        repoBiblioteca.setUpExemplare(repoI);
+        Biblioteca repoBiblioteca = new Biblioteca(repoA,repoE,bibliotecar1);
 
         masterService = new MasterService(repoBiblioteca, repoAbonat, repoBibliotecar, repoImprumut);
 
