@@ -76,6 +76,32 @@ public class BibliotecarController implements Observer<ExemplarStateChangeEvent>
     private ObservableList<ExemplarCarteDTOWithStatus> model = FXCollections.observableArrayList();
 
 
+    public void handleAdauga(ActionEvent actionEvent) {
+        //TODO: create table pentru carti
+    }
+
+    public void handleSterge(ActionEvent actionEvent) {
+        ExemplarCarteDTOWithStatus dto = this.tableExemplareBibliotecar.getSelectionModel().getSelectedItem();
+        if(dto != null){
+            this.service.deleteExemmplar(dto.getCodUnic());
+        }
+        else{
+            CustomAlert.showErrorMessage(this.dialogStage, "Intai, alegeti un exemplar din lista!");
+        }
+    }
+
+    public void handleModifica(ActionEvent actionEvent) {
+        ExemplarCarteDTOWithStatus dto = this.tableExemplareBibliotecar.getSelectionModel().getSelectedItem();
+        if(dto != null){
+            //new ExemplarCarte(coUnic,Carte)
+            //this.service.updateExemmplar(dto.getCodUnic(),);
+        }
+        else{
+            CustomAlert.showErrorMessage(this.dialogStage, "Intai, alegeti un exemplar din lista!");
+        }
+    }
+
+
     public void setService(MasterService masterService, Stage dialogStage, Bibliotecar loggedInBibliotecar) {
         this.dialogStage = dialogStage;
         this.loggedInBibliotecar = loggedInBibliotecar;
@@ -150,4 +176,5 @@ public class BibliotecarController implements Observer<ExemplarStateChangeEvent>
     public void update(ExemplarStateChangeEvent exemplarStateChangeEvent) {
         initModel();
     }
+
 }

@@ -2,6 +2,7 @@ package MVC;
 
 import Domain.Abonat;
 import Domain.ExemplarCarte;
+import Repository.UnavailableException;
 import Service.MasterService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,11 +14,9 @@ import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-//import java.time.format.DateTimeFormatter;
+
 
 public class ImprumutHandlerController {
-    //private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
     @FXML
     private TextField textFieldExemplar;
     @FXML
@@ -54,13 +53,18 @@ public class ImprumutHandlerController {
     }
 
     public void handleInchiriaza(ActionEvent actionEvent) {
-        Date start = Date.from(datePickerStart.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Date end = Date.from(datePickerStop.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        try {
+            Date start = Date.from(datePickerStart.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            Date end = Date.from(datePickerStop.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        this.service.imprumuta(loggedInAbonat, exemplarCarte, start, end);
-        this.parentStage.show();
-        this.thisStage.close();
-        CustomAlert.showMessage(this.thisStage, Alert.AlertType.CONFIRMATION, "confirmare", "Ati imprumutat cu succes exemplarul!");
+            this.service.imprumuta(loggedInAbonat, exemplarCarte, start, end);
+            this.parentStage.show();
+            this.thisStage.close();
+            CustomAlert.showMessage(this.thisStage, Alert.AlertType.CONFIRMATION, "confirmare", "Ati imprumutat cu succes exemplarul!");
+        }
+        catch (UnavailableException unavX){
+            CustomAlert.showErrorMessage(this.thisStage, unavX.getMessage());
+        }
     }
 
     public void handleBack(ActionEvent actionEvent) {

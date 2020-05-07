@@ -11,14 +11,14 @@ import java.util.stream.StreamSupport;
 public class Biblioteca {
     private List<Abonat> abonati;
     private List<ExemplarCarte> exemplareDisponibile; // aici pun restul
-    private List<ExemplarCarte> exemplareInchiriate; //TODO: trebuie ca la startup sa iau din logul de imprumuturi toate cartile care nu sunt returnate si sa le pun aici
+    private List<ExemplarCarte> exemplareInchiriate; // trebuie ca la startup sa iau din logul de imprumuturi toate cartile care nu sunt returnate si sa le pun aici
     private Bibliotecar bibliotecar;
 
-    public void setUpExemplare(ImprumutDataBaseRepository repoI){
+    public void setUpExemplare(ImprumutDataBaseRepository repoI){//TODO: exemplarele nu se gasesc cum trebuie. raman inchiriate, cand nu sunt, de fapt.
         List<Imprumut> allData = StreamSupport.stream(repoI.findAll().spliterator(), false).collect(Collectors.toList());
         List<Integer> disponibile = allData.stream().filter(Imprumut::isaFostReturnat).map(Imprumut::getExemplar).collect(Collectors.toList());
         List<ExemplarCarte> toBeRemoved = new ArrayList<>();
-        for (ExemplarCarte exemplar: exemplareDisponibile) {
+        for (ExemplarCarte exemplar: exemplareDisponibile) {//TODO: poate aici e problema... (e ca si cum nu ar conta ce e in baza de date, in imprumuturi)
             boolean found = false;
             for(int cod : disponibile){
                 if(exemplar.getCodUnic() == cod){
@@ -70,11 +70,7 @@ public class Biblioteca {
         return exemplareDisponibile;
     }
 
-    public ExemplarCarte findExemplarById(int codExemplar) {
-        // ... maybe split? TODO: vague function naming... available or unavailable ??? - refactor ASAP !!!
-        return null; // TODO: implement this
-        //TODO: decide if this should be refactored...
-    }
+
     public ExemplarCarte findExemplarDisponibilById(int codExemplar) {
         for (ExemplarCarte ex : this.exemplareDisponibile) {
             if(ex.getCodUnic() == codExemplar)
@@ -91,7 +87,7 @@ public class Biblioteca {
     }
 
 
-    public void imprumuta(ExemplarCarte exemplar) {
+    public void imprumuta(ExemplarCarte exemplar) { // TODO: buguri aici... nu se imprumuta bine
         if( this.esteExemplarInchiriat(exemplar)){
             throw new UnavailableException("Cartea a fost deja imprumutata intre timp!");
         }

@@ -74,7 +74,7 @@ public class AbonatController implements Observer<ExemplarStateChangeEvent> {
 
     private void initModel() {
 
-        Iterable<ExemplarCarte> grades = service.getAllExemplareDisponibile(); //TODO: doar exemplarele ce pot fi inchiriate se vor afisa.
+        Iterable<ExemplarCarte> grades = service.getAllExemplareDisponibile(); // doar exemplarele ce pot fi inchiriate se vor afisa.
         List<ExemplarCarte> gradeList = StreamSupport.stream(grades.spliterator(), false)
                 .collect(Collectors.toList());
 
@@ -100,7 +100,7 @@ public class AbonatController implements Observer<ExemplarStateChangeEvent> {
 
 
     public void handleMoreDetails(MouseEvent mouseEvent) {
-        ExemplarCarteDTO dto = this.tableExemplareAbonat.getSelectionModel().getSelectedItem(); // TODO: dto must a @NotNull object (hopefully...)
+        ExemplarCarteDTO dto = this.tableExemplareAbonat.getSelectionModel().getSelectedItem();
         if (dto != null) {
             this.textFieldTitlu.setText(dto.getTitlu());
             this.textFieldISBN.setText(dto.getISBN());
@@ -134,7 +134,7 @@ public class AbonatController implements Observer<ExemplarStateChangeEvent> {
                 ImprumutHandlerController imprumutHandlerController = loader.getController();
                 imprumutHandlerController.setService(this.service, this.dialogStage, dialogStage, dto.getExemplarCarte(), this.loggedInAbonat);
 
-                this.dialogStage.hide(); // TODO: hide here and show in opened window on close.
+                this.dialogStage.hide(); // !!! hide here and show in opened window on close.
                 dialogStage.show();
 
             } catch (IOException e) {

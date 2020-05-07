@@ -21,20 +21,6 @@ import java.util.List;
 import java.util.Properties;
 
 public class MainApp extends Application {
-
-//    private CrudRepository<String, Student> studentRepository;
-//    private StudentService studentService;
-//    private CrudRepository<String, Tema> temaRepository;
-//    private TemaService temaService;
-//    private CrudRepository<String, Nota> notaRepository;
-//    private NotaService notaService;
-//
-//    private CrudRepository<String, Profesor> profesorRepository;
-//    private ProfesorService profesorService;
-//
-//    private CrudRepository<String, Motivation> motivationRepository;
-//    private MotivationService motivationService;
-
     private MasterService masterService;
 
     public static void main(String[] args) {
@@ -43,28 +29,6 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        //T.O.D.O.: NOT WORKING !!! - */studentRepository = new StudentRepository(StudentValidator.getInstance(), ApplicationContext.getPROPERTIES().getProperty("data.txt.studenti"));
-        //studentRepository = new StudentRepository(StudentValidator.getInstance(), "data/STUDENTI.txt");
-//        studentRepository = new StudentDataBaseRepository(StudentValidator.getInstance());
-//        studentService = new StudentService(studentRepository);
-//
-//        //temaRepository = new TemaRepository(TemaValidator.getInstance(), "data/TEME.txt");
-//        temaRepository = new TemaDataBaseRepository(TemaValidator.getInstance());
-//        temaService = new TemaService(temaRepository);
-//
-//        //notaRepository = new NotaRepository(NotaValidator.getInstance(), "data/NOTE.txt");
-//        notaRepository = new NotaDataBaseRepository(NotaValidator.getInstance());
-//        notaService = new NotaService(notaRepository);
-//
-//        //profesorRepository = new ProfesorRepository(ProfesorValidator.getInstance(), "data/PROFESORI.txt");
-//        profesorRepository = new ProfesorDataBaseRepository(ProfesorValidator.getInstance());
-//        profesorService = new ProfesorService(profesorRepository);
-//
-//        //motivationRepository = new MotivationRepository(MotivationValidator.getInstance(),"data/MOTIVARI.txt");
-//        motivationRepository = new MotivationDataBaseRepository(MotivationValidator.getInstance());
-//        motivationService = new MotivationService(motivationRepository);
-
-//        masterService = new MasterService(profesorService, studentService, temaService, notaService, motivationService);
         Properties properties = new Properties();
         try {
             properties.load(JDBCInvariant.class.getResourceAsStream("/bd.config"));
@@ -98,21 +62,18 @@ public class MainApp extends Application {
 
         ImprumutDataBaseRepository repoI = new ImprumutDataBaseRepository();
 
-        DBRepositoryAbonat repoAbonat = new DBRepositoryAbonat(repoA); //TODO: create constructor !!!
-        DBRepositoryBibliotecar repoBibliotecar = new DBRepositoryBibliotecar(repoB); //TODO: create constructor !!!
-        DBRepositoryImprumut repoImprumut = new DBRepositoryImprumut(repoI); //TODO: create constructor !!!
+        DBRepositoryAbonat repoAbonat = new DBRepositoryAbonat(repoA);
+        DBRepositoryBibliotecar repoBibliotecar = new DBRepositoryBibliotecar(repoB);
+        DBRepositoryImprumut repoImprumut = new DBRepositoryImprumut(repoI);
 
 
-        Biblioteca repoBiblioteca = new Biblioteca(abonati,exemplare,bibliotecar1); //TODO: create constructor !!!
+        Biblioteca repoBiblioteca = new Biblioteca(abonati,exemplare,bibliotecar1);
         repoBiblioteca.setUpExemplare(repoI);
-
 
         masterService = new MasterService(repoBiblioteca, repoAbonat, repoBibliotecar, repoImprumut);
 
         init1(primaryStage);
         primaryStage.show();
-
-
     }
 
     private void init1(Stage primaryStage) throws IOException {

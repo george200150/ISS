@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-// class A ; class B extends A ; B b = ..(B).. new A();  MUST HAVE CAST TO class B, BUT it can THROW ClassCastException
-// ..interview question..
 
 public class MasterService implements Observable<ExemplarStateChangeEvent> {
     private List<Observer> observers = new ArrayList<>();
@@ -67,9 +65,16 @@ public class MasterService implements Observable<ExemplarStateChangeEvent> {
     }
 
     public void imprumuta(Abonat loggedInAbonat, ExemplarCarte exemplar, Date start, Date stop) {
+        ExemplarCarte gasit = this.findExemplarDisponibilById(exemplar.getCodUnic());
+        if (gasit == null){
+            //TODO: aici ar trebui sa arunce exceptie
+            throw new UnavailableException("cartea nu mai este disponibila!!! !!!"); // TODO: aici pare sa mearga, sa il gaseasca unde trebuie, dar validarea din functiile "imprumuta" are alta parere... must fix here
+        }
         //TODO: !!! validate + implement (choose where to start the validation step)
-        this.repoBiblioteca.imprumuta(exemplar); // throws if already hired in the meantime
         this.repoImprumut.imprumuta(loggedInAbonat, exemplar, start, stop); // history of hired exemplars
+        this.repoBiblioteca.imprumuta(exemplar); // throws if already hired in the meantime
+
+        repoBiblioteca.setUpExemplare(repoImprumut.getRepo());
         notifyObservers(new ExemplarStateChangeEvent(ChangeEventType.IMPRUMUTAT, exemplar));
     }
 
@@ -78,9 +83,10 @@ public class MasterService implements Observable<ExemplarStateChangeEvent> {
     }
 
 
-    //.. not implemented yet
+
     public void returneaza(Bibliotecar loggedInBibliotecar, int codAbonat, int codExemplar, Date now) {
-        ExemplarCarte exemplar = this.findExemplarInchiriatById(codExemplar); // TODO: THIS SHOULD BE THE POINT WHERE IT IS DECIDED IF THE EXEMPLAR HAS NOT BEEN FOUND (further validations become futile (_here_))
+        ExemplarCarte exemplar = this.findExemplarInchiriatById(codExemplar);
+        // TODO: THIS SHOULD BE THE POINT WHERE IT IS DECIDED IF THE EXEMPLAR HAS NOT BEEN FOUND (further validations become futile (_here_))
         //TODO: change findExemplarById to find___Available___ExemplarById !!!
 
         //TODO: ALREADY CHECKED IF EXEMPLAR EXISTS !!!//TODO: ALREADY CHECKED IF EXEMPLAR EXISTS !!!//TODO: ALREADY CHECKED IF EXEMPLAR EXISTS !!!
@@ -92,18 +98,19 @@ public class MasterService implements Observable<ExemplarStateChangeEvent> {
         this.repoBiblioteca.returneaza(exemplar);
         Abonat loggedInAbonat = this.repoAbonat.findById(codAbonat);
         int delay = this.repoImprumut.returneaza(loggedInAbonat, exemplar, now); // history of hired exemplars.
+        repoBiblioteca.setUpExemplare(repoImprumut.getRepo());
         notifyObservers(new ExemplarStateChangeEvent(ChangeEventType.RETURNAT, exemplar));
         if (delay > 0)
             throw new OverdueError("penalties: " + delay + " week overdue!");
     }
 
-    private ExemplarCarte findExemplarById(int codExemplar) {
-        //return repoBiblioteca.findExemplarById(codExemplar);
-        return null;
-    }
 
     private ExemplarCarte findExemplarInchiriatById(int codExemplar) {
         return repoBiblioteca.findExemplarInchiriatById(codExemplar);
+    }
+
+    private ExemplarCarte findExemplarDisponibilById(int codExemplar) {
+        return repoBiblioteca.findExemplarDisponibilById(codExemplar);
     }
 
 
@@ -129,4 +136,7 @@ public class MasterService implements Observable<ExemplarStateChangeEvent> {
         observers.forEach(x -> x.update(t));
     }
 
+    public void deleteExemmplar(int codUnic) {
+        //TODO: implement this + convert Biblioteca to a service that has a repo of Exemplars. (nu e ok cum am conceput design-ul aici)
+    }
 }

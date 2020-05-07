@@ -60,9 +60,9 @@
       </GridPane>
       <ButtonBar layoutX="792.0" layoutY="337.0" prefHeight="25.0" prefWidth="277.0">
         <buttons>
-            <Button mnemonicParsing="false" text="Adauga" />
-            <Button mnemonicParsing="false" text="Sterge" />
-            <Button mnemonicParsing="false" text="Modifica" />
+            <Button mnemonicParsing="false" onAction="#handleAdauga" text="Adauga" />
+            <Button mnemonicParsing="false" onAction="#handleSterge" text="Sterge" />
+            <Button mnemonicParsing="false" onAction="#handleModifica" text="Modifica" />
         </buttons>
       </ButtonBar>
       <Label fx:id="labelBibliotecar" layoutX="68.0" layoutY="44.0" text="bibliotecar: -bib-" />
