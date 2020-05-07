@@ -3,7 +3,7 @@ package MVC;
 import Domain.Abonat;
 import Domain.ExemplarCarte;
 import Domain.ExemplarCarteDTO;
-import Service.MasterService;
+import Service.ManagerService;
 import Utils.ExemplarStateChangeEvent;
 import Utils.Observer;
 import javafx.collections.FXCollections;
@@ -58,14 +58,14 @@ public class AbonatController implements Observer<ExemplarStateChangeEvent> {
 
     private Stage dialogStage;
     private Abonat loggedInAbonat;
-    private MasterService service;
+    private ManagerService service;
 
     private ObservableList<ExemplarCarteDTO> model = FXCollections.observableArrayList();
 
-    public void setService(MasterService masterService, Stage stage, Abonat loggedInAbonat) {
+    public void setService(ManagerService managerService, Stage stage, Abonat loggedInAbonat) {
         this.dialogStage = stage;
         this.loggedInAbonat = loggedInAbonat;
-        service = masterService;
+        service = managerService;
         service.addObserver(this);
         initModel();
         this.labelAbonat.setText(loggedInAbonat.toString());

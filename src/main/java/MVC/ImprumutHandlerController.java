@@ -3,7 +3,7 @@ package MVC;
 import Domain.Abonat;
 import Domain.ExemplarCarte;
 import Repository.UnavailableException;
-import Service.MasterService;
+import Service.ManagerService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -28,9 +28,9 @@ public class ImprumutHandlerController {
     private ExemplarCarte exemplarCarte;
     private Stage thisStage;
     private Stage parentStage;
-    private MasterService service;
+    private ManagerService service;
 
-    public void setService(MasterService service, Stage parentStage, Stage thisStage, ExemplarCarte exemplar, Abonat loggedInAbonat) {
+    public void setService(ManagerService service, Stage parentStage, Stage thisStage, ExemplarCarte exemplar, Abonat loggedInAbonat) {
         this.service = service;
         this.parentStage = parentStage;
         this.thisStage = thisStage;

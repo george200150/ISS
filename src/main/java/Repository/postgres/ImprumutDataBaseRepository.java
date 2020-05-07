@@ -57,7 +57,7 @@ public class ImprumutDataBaseRepository implements CrudRepository<Integer, Impru
                 lst.add(imprumut);
             }
         } catch (SQLException ignored) {
-            throw new IllegalArgumentException("Error: Could not connect to the database");
+            throw new IllegalArgumentException("Eroare: nu s-a putut realiza conexiunea la baza de date");
         }
         return lst;
     }

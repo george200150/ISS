@@ -54,4 +54,9 @@ public class Carte {
     public void setAnAparitie(int anAparitie) {
         this.anAparitie = anAparitie;
     }
+
+    @Override
+    public String toString() {
+        return '"'+titlu + '"' + " de " + autor + ", publicata de " + editura;
+    }
 }

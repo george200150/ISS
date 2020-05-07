@@ -3,7 +3,7 @@ package MVC;
 import Domain.Abonat;
 import Domain.Bibliotecar;
 import Repository.UnavailableException;
-import Service.MasterService;
+import Service.ManagerService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +15,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 public class LoginController {
@@ -25,14 +24,14 @@ public class LoginController {
     private PasswordField passwordFieldUserPassword;
 
     private Stage dialogStage;
-    private MasterService masterService;
+    private ManagerService managerService;
 
     @FXML
     private void initialize() {
     }
 
-    public void setService(MasterService masterService, Stage stage) {
-        this.masterService = masterService;
+    public void setService(ManagerService managerService, Stage stage) {
+        this.managerService = managerService;
         this.dialogStage = stage;
     }
 
@@ -43,7 +42,7 @@ public class LoginController {
             String password = this.passwordFieldUserPassword.getText();
 
             try {
-                List<Object> response = this.masterService.findAngajatByCredentials(codUser, password);
+                List<Object> response = this.managerService.findAngajatByCredentials(codUser, password);
                 String grantedType = (String) response.get(1); // check if account access is granted
 
                 if (grantedType.equals("abonat")) {
@@ -62,11 +61,10 @@ public class LoginController {
                         dialogStage.setScene(scene);
 
                         AbonatController studentAccountController = loader.getController();
-                        studentAccountController.setService(masterService, dialogStage, abonat);
+                        studentAccountController.setService(managerService, dialogStage, abonat);
 
                         this.dialogStage.close();
                         dialogStage.show();
-                        dialogStage.setMaximized(true);
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -87,11 +85,10 @@ public class LoginController {
                         dialogStage.setScene(scene);
 
                         BibliotecarController studentAccountController = fxmlLoader.getController();
-                        studentAccountController.setService(masterService, dialogStage, bibliotecar);
+                        studentAccountController.setService(managerService, dialogStage, bibliotecar);
 
                         this.dialogStage.close();
                         dialogStage.show();
-                        dialogStage.setMaximized(true);
 
                     } catch (IOException e) {
                         e.printStackTrace();

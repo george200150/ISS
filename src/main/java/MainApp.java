@@ -4,7 +4,7 @@ import Repository.DBRepositoryAbonat;
 import Repository.DBRepositoryBibliotecar;
 import Repository.DBRepositoryImprumut;
 import Repository.postgres.*;
-import Service.MasterService;
+import Service.ManagerService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -12,12 +12,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 public class MainApp extends Application {
-    private MasterService masterService;
+    private ManagerService managerService;
 
     public static void main(String[] args) {
         launch(args);
@@ -70,7 +68,7 @@ public class MainApp extends Application {
 
         Biblioteca repoBiblioteca = new Biblioteca(repoA,repoE,bibliotecar1);
 
-        masterService = new MasterService(repoBiblioteca, repoAbonat, repoBibliotecar, repoImprumut);
+        managerService = new ManagerService(repoBiblioteca, repoAbonat, repoBibliotecar, repoImprumut);
 
         init1(primaryStage);
         primaryStage.show();
@@ -85,6 +83,6 @@ public class MainApp extends Application {
         primaryStage.setScene(new Scene(gradeLayout));
 
         LoginController loginChoiceController = fxmlLoader.getController();
-        loginChoiceController.setService(masterService, primaryStage);
+        loginChoiceController.setService(managerService, primaryStage);
     }
 }

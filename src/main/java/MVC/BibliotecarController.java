@@ -6,7 +6,8 @@ import Domain.ExemplarCarte;
 import Domain.ExemplarCarteDTOWithStatus;
 import Repository.OverdueError;
 import Repository.UnavailableException;
-import Service.MasterService;
+import Repository.ValidationException;
+import Service.ManagerService;
 import Utils.ExemplarStateChangeEvent;
 import Utils.Observer;
 import javafx.collections.FXCollections;
@@ -69,7 +70,7 @@ public class BibliotecarController implements Observer<ExemplarStateChangeEvent>
 
     private Stage dialogStage;
     private Bibliotecar loggedInBibliotecar;
-    private MasterService service;
+    private ManagerService service;
 
     private ObservableList<ExemplarCarteDTOWithStatus> model = FXCollections.observableArrayList();
 
@@ -82,37 +83,46 @@ public class BibliotecarController implements Observer<ExemplarStateChangeEvent>
          * UPDATE: all fields from the "exemplar" object are necessary. - search by id and update the found object
          * DELETE: we need only the id from the "exemplar" object. - search by id and delete the found object
          */
-        int id = Integer.parseInt(textFieldCodUnic.getText());
-        String titlu = textFieldTitlu.getText();
-        String ISBN = textFieldISBN.getText();
-        String autor = textFieldAutor.getText();
-        String editura = textFieldEditura.getText();
-        int anAparitie = Integer.parseInt(textFieldAnAparitie.getText());
-        Carte carte = new Carte(titlu,ISBN,autor,editura,anAparitie);
-        ExemplarCarte exemplar = new ExemplarCarte(id,carte);
-        String tipOperatie = "INSERT/SELECT/UPDATE/DELETE";
-        Button pressedButton = (Button) actionEvent.getSource();
-        String text = pressedButton.getText(); // would work better with getId()
-        switch (text) {
-            case "Adauga":
-                tipOperatie = "INSERT";
-                break;
-            case "Modifica":
-                tipOperatie = "UPDATE";
-                break;
-            case "Sterge":
-                tipOperatie = "DELETE";
-                break;
+        try {
+            int id = Integer.parseInt(textFieldCodUnic.getText());
+            String titlu = textFieldTitlu.getText();
+            String ISBN = textFieldISBN.getText();
+            String autor = textFieldAutor.getText();
+            String editura = textFieldEditura.getText();
+            int anAparitie = Integer.parseInt(textFieldAnAparitie.getText());
+            Carte carte = new Carte(titlu, ISBN, autor, editura, anAparitie);
+            ExemplarCarte exemplar = new ExemplarCarte(id, carte);
+            String tipOperatie = "INSERT/SELECT/UPDATE/DELETE";
+            Button pressedButton = (Button) actionEvent.getSource();
+            String text = pressedButton.getText(); // would work better with getId()
+            switch (text) {
+                case "Adauga":
+                    tipOperatie = "INSERT";
+                    break;
+                case "Modifica":
+                    tipOperatie = "UPDATE";
+                    break;
+                case "Sterge":
+                    tipOperatie = "DELETE";
+                    break;
+            }
+            this.service.opereaza(exemplar, tipOperatie); // may throw
+            this.service.getAllExemplareExistente(); // get updated the state of the database
+            CustomAlert.showMessage(this.dialogStage, Alert.AlertType.CONFIRMATION, "Succes!", text + "re efectuata cu succes!");
         }
-        this.service.opereaza(exemplar, tipOperatie); // may throw
-        this.service.getAllExemplareExistente(); // get updated the state of the database
+        catch (ValidationException | UnavailableException ex){
+            CustomAlert.showErrorMessage(this.dialogStage, ex.getMessage());
+        }
+        catch (NumberFormatException nex){
+            CustomAlert.showErrorMessage(this.dialogStage, "Introduceti corect datele pentru operatie!");
+        }
     }
 
 
-    public void setService(MasterService masterService, Stage dialogStage, Bibliotecar loggedInBibliotecar) {
+    public void setService(ManagerService managerService, Stage dialogStage, Bibliotecar loggedInBibliotecar) {
         this.dialogStage = dialogStage;
         this.loggedInBibliotecar = loggedInBibliotecar;
-        this.service = masterService;
+        this.service = managerService;
         service.addObserver(this);
         initModel();
         this.labelBibliotecar.setText(loggedInBibliotecar.toString());
@@ -166,6 +176,7 @@ public class BibliotecarController implements Observer<ExemplarStateChangeEvent>
             int codExemplar = Integer.parseInt(this.textFieldCodExemplar.getText());
             Date now = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
             this.service.returneaza(this.loggedInBibliotecar,codAbonat, codExemplar, now); //if return deadline is overdue, then compute penalties
+            CustomAlert.showMessage(this.dialogStage, Alert.AlertType.CONFIRMATION, "Succes!", "Ati returnat cartea cu succes!");
         }
         catch (NumberFormatException ignored){
             CustomAlert.showErrorMessage(null, "Nu ati introdus corespunzator codurile de identificare!");

@@ -3,8 +3,6 @@ package Domain;
 import Repository.postgres.AbonatDataBaseRepository;
 import Repository.postgres.ExemplarDataBaseRepository;
 
-import java.util.List;
-
 
 public class Biblioteca {
     private AbonatDataBaseRepository abonati;
@@ -25,16 +23,16 @@ public class Biblioteca {
         return this.exemplare.findOne(codUnic);
     }
 
-    public void saveExemplar(ExemplarCarte exemplar) { //TODO: should throw ??? - no return
-        this.exemplare.save(exemplar);
+    public ExemplarCarte saveExemplar(ExemplarCarte exemplar) {
+        return this.exemplare.save(exemplar);
     }
 
-    public void updateExemplar(ExemplarCarte exemplar) { //TODO: should throw ??? - no return
-        this.exemplare.update(exemplar);
+    public ExemplarCarte updateExemplar(ExemplarCarte exemplar) {
+        return this.exemplare.update(exemplar);
     }
 
-    public void removeExemplar(int codUnic) { //TODO: should throw ??? - no return
-        this.exemplare.delete(codUnic);
+    public ExemplarCarte removeExemplar(int codUnic) {
+        return this.exemplare.delete(codUnic);
     }
 
 

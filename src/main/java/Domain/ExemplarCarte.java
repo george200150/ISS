@@ -70,4 +70,8 @@ public class ExemplarCarte {
         refer.setAnAparitie(anAparitie);
     }
 
+    @Override
+    public String toString() {
+        return refer.toString();
+    }
 }

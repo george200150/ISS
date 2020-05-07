@@ -10,13 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class DBRepositoryImprumut {
-
     ImprumutDataBaseRepository repo;
-
-    public ImprumutDataBaseRepository getRepo(){
-        return repo;
-    }
-
 
     public DBRepositoryImprumut(ImprumutDataBaseRepository repo) {
         this.repo = repo;
@@ -28,7 +22,6 @@ public class DBRepositoryImprumut {
     public void imprumuta(Abonat loggedInAbonat, ExemplarCarte exemplar, Date start, Date stop) {
         //Validator.validate(start, stop);
         //TODO: validate interval
-        //TODO: reverse calls in super caller stack in order to check here if exemplar is still hired at the moment
         if (!this.checkIfExemplarIsDisponibil(exemplar))
             throw new UnavailableException("Exemplarul de imprumutat nu mai este disponibil!");
 
@@ -98,6 +91,8 @@ public class DBRepositoryImprumut {
         for (Imprumut imprumut: fromDBresult) {
             if (imprumut.getCreator() == loggedInAbonat.getCodUnic() && imprumut.getExemplar() == exemplar.getCodUnic())
                 return imprumut;
+            else if (imprumut.getCreator() != loggedInAbonat.getCodUnic() && imprumut.getExemplar() == exemplar.getCodUnic())
+                throw new UnavailableException("Exemplarul este imprumutat de un alt abonat momentan!");
         }
         return null;
     }
