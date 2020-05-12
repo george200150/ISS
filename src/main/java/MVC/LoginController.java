@@ -1,9 +1,9 @@
 package MVC;
 
-import Domain.Abonat;
-import Domain.Bibliotecar;
+import Domain.Subscriber;
+import Domain.Librarian;
 import Repository.UnavailableException;
-import Service.ManagerService;
+import Service.LibraryService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,36 +17,31 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
 
-public class LoginController {
-    @FXML
-    public TextField codUserTextField;
-    @FXML
-    private PasswordField passwordFieldUserPassword;
 
+public class LoginController {
+    @FXML public TextField codUserTextField;
+    @FXML private PasswordField passwordFieldUserPassword;
     private Stage dialogStage;
-    private ManagerService managerService;
+    private LibraryService libraryService;
 
     @FXML
     private void initialize() {
     }
 
-    public void setService(ManagerService managerService, Stage stage) {
-        this.managerService = managerService;
+    public void setService(LibraryService libraryService, Stage stage) {
+        this.libraryService = libraryService;
         this.dialogStage = stage;
     }
 
-
     public void handleLogIn(ActionEvent actionEvent) {
         try {
-            int codUser = Integer.parseInt(this.codUserTextField.getText()); // this is actually an int
+            int codUser = Integer.parseInt(this.codUserTextField.getText());
             String password = this.passwordFieldUserPassword.getText();
-
             try {
-                List<Object> response = this.managerService.findAngajatByCredentials(codUser, password);
+                List<Object> response = this.libraryService.findEmployeeByCredentials(codUser, password);
                 String grantedType = (String) response.get(1); // check if account access is granted
-
-                if (grantedType.equals("abonat")) {
-                    Abonat abonat = (Abonat) response.get(0);
+                if (grantedType.equals("subscriber")) {
+                    Subscriber subscriber = (Subscriber) response.get(0);
                     try {
                         // create a new stage for the popup dialog.
                         FXMLLoader loader = new FXMLLoader();
@@ -55,22 +50,20 @@ public class LoginController {
 
                         // Create the dialog Stage.
                         Stage dialogStage = new Stage();
-                        dialogStage.setTitle("Fereastra Abonat");
+                        dialogStage.setTitle("Fereastra Subscriber");
                         dialogStage.initModality(Modality.WINDOW_MODAL);
                         Scene scene = new Scene(root);
                         dialogStage.setScene(scene);
 
-                        AbonatController studentAccountController = loader.getController();
-                        studentAccountController.setService(managerService, dialogStage, abonat);
-
+                        SubscriberController studentAccountController = loader.getController();
+                        studentAccountController.setService(libraryService, dialogStage, subscriber);
                         this.dialogStage.close();
                         dialogStage.show();
-
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                } else if (grantedType.equals("bibliotecar")) { // bibliotecarul este si admin
-                    Bibliotecar bibliotecar = (Bibliotecar) response.get(0);
+                } else if (grantedType.equals("librarian")) { // librarian is the admin
+                    Librarian librarian = (Librarian) response.get(0);
                     try {
                         // create a new stage for the popup dialog.
                         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -79,17 +72,15 @@ public class LoginController {
 
                         // Create the dialog Stage.
                         Stage dialogStage = new Stage();
-                        dialogStage.setTitle("Fereastra  Bibliotecar");
+                        dialogStage.setTitle("Fereastra  Librarian");
                         dialogStage.initModality(Modality.WINDOW_MODAL);
                         Scene scene = new Scene(root);
                         dialogStage.setScene(scene);
 
-                        BibliotecarController studentAccountController = fxmlLoader.getController();
-                        studentAccountController.setService(managerService, dialogStage, bibliotecar);
-
+                        LibrarianController studentAccountController = fxmlLoader.getController();
+                        studentAccountController.setService(libraryService, dialogStage, librarian);
                         this.dialogStage.close();
                         dialogStage.show();
-
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -99,8 +90,7 @@ public class LoginController {
             } catch (UnavailableException valX) {
                 CustomAlert.showErrorMessage(null, valX.getMessage());
             }
-        }
-        catch (NumberFormatException nfe){
+        } catch (NumberFormatException nfe) {
             CustomAlert.showErrorMessage(null, "Codul de autentificare trebuie sa fie un numar intreg!");
         }
     }

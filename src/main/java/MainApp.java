@@ -1,10 +1,7 @@
 import Domain.*;
 import MVC.LoginController;
-import Repository.DBRepositoryAbonat;
-import Repository.DBRepositoryBibliotecar;
-import Repository.DBRepositoryImprumut;
 import Repository.postgres.*;
-import Service.ManagerService;
+import Service.LibraryService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,7 +12,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class MainApp extends Application {
-    private ManagerService managerService;
+    private LibraryService libraryService;
 
     public static void main(String[] args) {
         launch(args);
@@ -33,42 +30,37 @@ public class MainApp extends Application {
         }
         new JDBCInvariant(properties); // initialize static fields in object before using anything from app logic
 
-        Carte carte = new Carte("ION", "isbn:1234RO","Marcel Avram", "Polina", 1969);
-        ExemplarCarte exemplarCarte1 = new ExemplarCarte(1, carte);
-        ExemplarCarte exemplarCarte2 = new ExemplarCarte(2, carte);
-        ExemplarCarte exemplarCarte3 = new ExemplarCarte(3, carte);
-        //ArrayList<ExemplarCarte> exemplare = new ArrayList<ExemplarCarte>(List.of(exemplarCarte1, exemplarCarte2, exemplarCarte3));
+        Book book = new Book("ION", "isbn:1234RO","Marcel Avram", "Polina", 1969);
+        BookCopy bookCopy1 = new BookCopy(1, book);
+        BookCopy bookCopy2 = new BookCopy(2, book);
+        BookCopy bookCopy3 = new BookCopy(3, book);
+        //ArrayList<BookCopy> exemplare = new ArrayList<BookCopy>(List.of(bookCopy1, bookCopy2, bookCopy3));
 
         ExemplarDataBaseRepository repoE = new ExemplarDataBaseRepository();
-        /*repoE.save(exemplarCarte1);
-        repoE.save(exemplarCarte2);
-        repoE.save(exemplarCarte3);*/
+        /*repoE.save(bookCopy1);
+        repoE.save(bookCopy2);
+        repoE.save(bookCopy3);*/
 
-        /*Abonat abonat1 = new Abonat("1990324240024", "Gheorghe Vasile", "Strada limbii", "08322323", 1, "1");
-        Abonat abonat2 = new Abonat("1990324240024", "Gheorghe Vasile", "Strada limbii", "08322323", 2, "1");
-        Abonat abonat3 = new Abonat("1990324240024", "Gheorghe Vasile", "Strada limbii", "08322323", 3, "1");
-        ArrayList<Abonat> abonati = new ArrayList<Abonat>(List.of(abonat1, abonat2, abonat3));*/
+        /*Subscriber abonat1 = new Subscriber("1990324240024", "Gheorghe Vasile", "Strada limbii", "08322323", 1, "1");
+        Subscriber abonat2 = new Subscriber("1990324240024", "Gheorghe Vasile", "Strada limbii", "08322323", 2, "1");
+        Subscriber abonat3 = new Subscriber("1990324240024", "Gheorghe Vasile", "Strada limbii", "08322323", 3, "1");
+        ArrayList<Subscriber> abonati = new ArrayList<Subscriber>(List.of(abonat1, abonat2, abonat3));*/
 
-        AbonatDataBaseRepository repoA = new AbonatDataBaseRepository();
+        SubscriberDataBaseRepository repoA = new SubscriberDataBaseRepository();
         //repoA.save(abonat1);
         //repoA.save(abonat2);
         //repoA.save(abonat3);
 
-        Bibliotecar bibliotecar1 = new Bibliotecar(0,"0");
-        BibliotecarDataBaseRepository repoB = new BibliotecarDataBaseRepository();
-        //repoB.save(bibliotecar1);
+        Librarian librarian1 = new Librarian(0,"0");
+        LibrarianDataBaseRepository repoB = new LibrarianDataBaseRepository();
+        //repoB.save(librarian1);
 
 
-        ImprumutDataBaseRepository repoI = new ImprumutDataBaseRepository();
-
-        DBRepositoryAbonat repoAbonat = new DBRepositoryAbonat(repoA);
-        DBRepositoryBibliotecar repoBibliotecar = new DBRepositoryBibliotecar(repoB);
-        DBRepositoryImprumut repoImprumut = new DBRepositoryImprumut(repoI);
+        HiringDataBaseRepository repoI = new HiringDataBaseRepository();
 
 
-        Biblioteca repoBiblioteca = new Biblioteca(repoA,repoE,bibliotecar1);
 
-        managerService = new ManagerService(repoBiblioteca, repoAbonat, repoBibliotecar, repoImprumut);
+        libraryService = new LibraryService(repoE, repoA, repoB, repoI);
 
         init1(primaryStage);
         primaryStage.show();
@@ -83,6 +75,6 @@ public class MainApp extends Application {
         primaryStage.setScene(new Scene(gradeLayout));
 
         LoginController loginChoiceController = fxmlLoader.getController();
-        loginChoiceController.setService(managerService, primaryStage);
+        loginChoiceController.setService(libraryService, primaryStage);
     }
 }

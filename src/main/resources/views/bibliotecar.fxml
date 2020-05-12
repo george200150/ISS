@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<!--fx:controller="Bibliotecar"-->
+<!--fx:controller="Librarian"-->
 
-<AnchorPane prefHeight="561.0" prefWidth="1101.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MVC.BibliotecarController">
+<AnchorPane prefHeight="561.0" prefWidth="1101.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MVC.LibrarianController">
    <children>
       <Label layoutX="68.0" layoutY="68.0" text="Vizualizare lista exemplare" />
       <TableView fx:id="tableExemplareBibliotecar" layoutX="68.0" layoutY="97.0" onMouseClicked="#handleMoreDetails" prefHeight="265.0" prefWidth="715.0">
@@ -60,16 +60,16 @@
       </GridPane>
       <ButtonBar layoutX="792.0" layoutY="337.0" prefHeight="25.0" prefWidth="277.0">
         <buttons>
-            <Button fx:id="buttonAdauga" mnemonicParsing="false" onAction="#handleOpereaza" text="Adauga" />
-            <Button fx:id="buttonSterge" mnemonicParsing="false" onAction="#handleOpereaza" text="Sterge" />
-            <Button fx:id="buttonModifica" mnemonicParsing="false" onAction="#handleOpereaza" text="Modifica" />
+            <Button fx:id="buttonAdauga" mnemonicParsing="false" onAction="#handleOperate" text="Adauga" />
+            <Button fx:id="buttonSterge" mnemonicParsing="false" onAction="#handleOperate" text="Sterge" />
+            <Button fx:id="buttonModifica" mnemonicParsing="false" onAction="#handleOperate" text="Modifica" />
         </buttons>
       </ButtonBar>
-      <Label fx:id="labelBibliotecar" layoutX="68.0" layoutY="44.0" text="bibliotecar: -bib-" />
-      <Button layoutX="167.0" layoutY="458.0" mnemonicParsing="false" onAction="#handleReturneaza" text="Returnare" />
+      <Label fx:id="labelBibliotecar" layoutX="68.0" layoutY="44.0" text="librarian: -bib-" />
+      <Button layoutX="167.0" layoutY="458.0" mnemonicParsing="false" onAction="#handleReturn" text="Returnare" />
       <TextField fx:id="textFieldCodAbonat" layoutX="167.0" layoutY="383.0" prefWidth="228.0" />
       <TextField fx:id="textFieldCodExemplar" layoutX="167.0" layoutY="420.0" prefWidth="228.0" />
-      <Label layoutX="90.0" layoutY="387.0" text="cod abonat:" />
+      <Label layoutX="90.0" layoutY="387.0" text="cod subscriber:" />
       <Label layoutX="33.0" layoutY="424.0" text="cod exemplar returnat:" />
    </children>
 </AnchorPane>

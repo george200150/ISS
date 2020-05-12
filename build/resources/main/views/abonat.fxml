@@ -12,7 +12,7 @@
 
 <!--fx:controller="Ui"-->
 
-<AnchorPane prefHeight="609.0" prefWidth="958.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MVC.AbonatController">
+<AnchorPane prefHeight="609.0" prefWidth="958.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MVC.SubscriberController">
    <children>
       <Label layoutX="106.0" layoutY="79.0" text="Catalog biblioteca" />
       <GridPane layoutX="603.0" layoutY="130.0" prefHeight="144.0" prefWidth="249.0">
@@ -41,7 +41,7 @@
          </children>
       </GridPane>
       <Button layoutX="663.0" layoutY="329.0" mnemonicParsing="false" onAction="#handleImprumuta" text="Imprumuta!" />
-      <Label fx:id="labelAbonat" layoutX="106.0" layoutY="54.0" text="Nume: -abonat-" />
+      <Label fx:id="labelAbonat" layoutX="106.0" layoutY="54.0" text="Nume: -subscriber-" />
       <TableView fx:id="tableExemplareAbonat" layoutX="106.0" layoutY="124.0" onMouseClicked="#handleMoreDetails" prefHeight="230.0" prefWidth="390.0">
         <columns>
           <TableColumn fx:id="tableExemplareAbonatColumnTitlu" prefWidth="75.0" text="Titlu" />

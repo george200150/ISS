@@ -1,7 +1,7 @@
 package Repository.postgres;
 
 
-import Domain.ExemplarCarte;
+import Domain.BookCopy;
 import Repository.ValidationException;
 
 import java.sql.Connection;
@@ -10,17 +10,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExemplarDataBaseRepository implements CrudRepository<Integer, ExemplarCarte> {
+public class ExemplarDataBaseRepository implements CrudRepository<Integer, BookCopy> {
     private Connection connection;
-    //TODO: private Validator<ExemplarCarte> validator;
 
-    public ExemplarDataBaseRepository(/*TODO: Validator<ExemplarCarte> validator*/) {
+    public ExemplarDataBaseRepository() {
         this.connection = JDBCInvariant.getConnection();
-        //TODO: this.validator = validator;
     }
 
     @Override
-    public ExemplarCarte findOne(Integer id) throws IllegalArgumentException {
+    public BookCopy findOne(Integer id) throws IllegalArgumentException {
         try {
             ResultSet data = connection.createStatement().executeQuery("SELECT * FROM \"Exemplare\"  WHERE \"codUnic\" =" + "\'" + id + "\'");
             data.next();//TODO: sql injection prone
@@ -31,16 +29,16 @@ public class ExemplarDataBaseRepository implements CrudRepository<Integer, Exemp
             String editura = data.getString(5);
             int anAparitie = data.getInt(6);
 
-            ExemplarCarte exemplarCarte = new ExemplarCarte(id, titlu, ISBN, autor, editura, anAparitie);
-            return exemplarCarte;
+            BookCopy bookCopy = new BookCopy(id, titlu, ISBN, autor, editura, anAparitie);
+            return bookCopy;
         } catch (SQLException ignored) {
         }
         return null;
     }
 
     @Override
-    public Iterable<ExemplarCarte> findAll() {
-        List<ExemplarCarte> lst = new ArrayList<>();
+    public Iterable<BookCopy> findAll() {
+        List<BookCopy> lst = new ArrayList<>();
         try {
             ResultSet data = connection.createStatement().executeQuery("SELECT * FROM \"Exemplare\"");
             while (data.next()) {
@@ -51,8 +49,8 @@ public class ExemplarDataBaseRepository implements CrudRepository<Integer, Exemp
                 String editura = data.getString(5);
                 int anAparitie = data.getInt(6);
 
-                ExemplarCarte exemplarCarte = new ExemplarCarte(codUnic, titlu, ISBN, autor, editura, anAparitie);
-                lst.add(exemplarCarte);
+                BookCopy bookCopy = new BookCopy(codUnic, titlu, ISBN, autor, editura, anAparitie);
+                lst.add(bookCopy);
             }
         } catch (SQLException ignored) {
             throw new IllegalArgumentException("Error: Could not connect to the database");
@@ -62,11 +60,10 @@ public class ExemplarDataBaseRepository implements CrudRepository<Integer, Exemp
 
 
     @Override
-    public ExemplarCarte save(ExemplarCarte entity) throws ValidationException {
+    public BookCopy save(BookCopy entity) throws ValidationException {
         if (entity == null) {
             throw new IllegalArgumentException("ENTITATEA NU POATE FI NULL");
         }
-        //TODO: validator.validate(entity);
         if (findOne(entity.getCodUnic()) != null) {
             throw new ValidationException("DUPLICAT GASIT!");
         }
@@ -88,27 +85,26 @@ public class ExemplarDataBaseRepository implements CrudRepository<Integer, Exemp
     }
 
     @Override
-    public ExemplarCarte delete(Integer id) throws IllegalArgumentException {
-        ExemplarCarte exemplarCarte = findOne(id);
-        if (exemplarCarte != null) {
+    public BookCopy delete(Integer id) throws IllegalArgumentException {
+        BookCopy bookCopy = findOne(id);
+        if (bookCopy != null) {
             try {
                 connection.createStatement()
-                        .execute("DELETE FROM \"Exemplare\" WHERE \"codUnic\" = " + "\'" +  id + "\'");
+                        .execute("DELETE FROM \"Exemplare\" WHERE \"codUnic\" = " + "\'" + id + "\'");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        return exemplarCarte;
+        return bookCopy;
     }
 
     @Override
-    public ExemplarCarte update(ExemplarCarte entity) {
-        if (entity == null){
+    public BookCopy update(BookCopy entity) {
+        if (entity == null) {
             throw new IllegalArgumentException("Entitatea nu poate fi NULL!");
         }
-        //TODO: validator.validate(entity);
         if (findOne(entity.getCodUnic()) != null) {
-            ExemplarCarte old = findOne(entity.getCodUnic());
+            BookCopy old = findOne(entity.getCodUnic());
             try {
                 connection.createStatement().execute("UPDATE \"Exemplare\" SET " +
                         "\"titlu\" = \'" + entity.getTitlu() + "\'" +

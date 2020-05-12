@@ -14767,7 +14767,7 @@
 										"$ref": "AAAAAAFw9ydwkXdnQlo="
 									},
 									"edgePosition": 2,
-									"text": "+bibliotecar"
+									"text": "+librarian"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -14981,7 +14981,7 @@
 										"$ref": "AAAAAAFw9ydwkXd1pfU="
 									},
 									"edgePosition": 1,
-									"text": "+abonat la"
+									"text": "+subscriber la"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -15045,7 +15045,7 @@
 										"$ref": "AAAAAAFw9ydwkXd1pfU="
 									},
 									"edgePosition": 2,
-									"text": "+abonat"
+									"text": "+subscriber"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -16100,7 +16100,7 @@
 									"hostEdge": {
 										"$ref": "AAAAAAFxG4XSYJ6W0LA="
 									},
-									"text": "+abonat"
+									"text": "+subscriber"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -16376,7 +16376,7 @@
 									"hostEdge": {
 										"$ref": "AAAAAAFxG5EgeMZ6Wvw="
 									},
-									"text": "+carte"
+									"text": "+book"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -16607,14 +16607,14 @@
 							"_parent": {
 								"$ref": "AAAAAAFw9ydwkXeI6ew="
 							},
-							"name": "abonat la",
+							"name": "subscriber la",
 							"end1": {
 								"_type": "UMLAssociationEnd",
 								"_id": "AAAAAAFw9ydwkXeA1B0=",
 								"_parent": {
 									"$ref": "AAAAAAFw9ydwkXeCGI8="
 								},
-								"name": "abonat",
+								"name": "subscriber",
 								"reference": {
 									"$ref": "AAAAAAFw9ydwkXeI6ew="
 								},
@@ -16705,7 +16705,7 @@
 								"_parent": {
 									"$ref": "AAAAAAFw9ydwkXeLnp4="
 								},
-								"name": "bibliotecar",
+								"name": "librarian",
 								"reference": {
 									"$ref": "AAAAAAFw9ydwkXeMPuM="
 								},
@@ -16761,7 +16761,7 @@
 								"_parent": {
 									"$ref": "AAAAAAFxG5EgeMZ2lOk="
 								},
-								"name": "carte",
+								"name": "book",
 								"reference": {
 									"$ref": "AAAAAAFw9ydwkXd7HVQ="
 								},
@@ -16849,7 +16849,7 @@
 								"_parent": {
 									"$ref": "AAAAAAFxG4XSYJ6S22g="
 								},
-								"name": "abonat",
+								"name": "subscriber",
 								"reference": {
 									"$ref": "AAAAAAFw9ydwkXeI6ew="
 								},
@@ -20533,7 +20533,7 @@
 											"top": 92,
 											"width": 470.7421875,
 											"height": 13,
-											"text": "+imprumuta(abonat: Abonat, exemplar: ExemplarCarte, start: Date, stop: Date)",
+											"text": "+imprumuta(subscriber: Abonat, exemplar: ExemplarCarte, start: Date, stop: Date)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -20550,7 +20550,7 @@
 											"top": 107,
 											"width": 470.7421875,
 											"height": 13,
-											"text": "+returneaza(abonat: Abonat, exemplar: ExemplarCarte, now: Date)",
+											"text": "+returneaza(subscriber: Abonat, exemplar: ExemplarCarte, now: Date)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -20567,7 +20567,7 @@
 											"top": 122,
 											"width": 470.7421875,
 											"height": 13,
-											"text": "+findImprumutByAbonatAndExemplar(abonat: Abonat, exemplar: ExemplarCarte)",
+											"text": "+findImprumutByAbonatAndExemplar(subscriber: Abonat, exemplar: ExemplarCarte)",
 											"horizontalAlignment": 0
 										}
 									],
@@ -20976,7 +20976,7 @@
 											"top": 491,
 											"width": 506.8857421875,
 											"height": 13,
-											"text": "+apasaImprumuta(abonat: Abonat, exemplar: ExemplarCarte, start: Date, stop: Date)",
+											"text": "+apasaImprumuta(subscriber: Abonat, exemplar: ExemplarCarte, start: Date, stop: Date)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -21010,7 +21010,7 @@
 											"top": 521,
 											"width": 506.8857421875,
 											"height": 13,
-											"text": "+initializeazaFormularImprumut(exemplar: ExemplarCarte, abonat: Abonat)",
+											"text": "+initializeazaFormularImprumut(exemplar: ExemplarCarte, subscriber: Abonat)",
 											"horizontalAlignment": 0
 										}
 									],
@@ -21485,7 +21485,7 @@
 											"top": 684,
 											"width": 462.78857421875,
 											"height": 13,
-											"text": "+imprumuta(abonat: Abonat, exemplar: ExemplarCarte, start: Date, stop: Date)",
+											"text": "+imprumuta(subscriber: Abonat, exemplar: ExemplarCarte, start: Date, stop: Date)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -22030,7 +22030,7 @@
 											"top": 433,
 											"width": 526.4365234375,
 											"height": 13,
-											"text": "+imprumuta(abonat: Abonat, exemplar: ExemplarCarte, start: Date, stop: Date)",
+											"text": "+imprumuta(subscriber: Abonat, exemplar: ExemplarCarte, start: Date, stop: Date)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -22047,7 +22047,7 @@
 											"top": 448,
 											"width": 526.4365234375,
 											"height": 13,
-											"text": "+returneaza(bibliotecar: Bibliotecar, codAbonat: Integer, codExemplar: Integer, now: Date)",
+											"text": "+returneaza(librarian: Bibliotecar, codAbonat: Integer, codExemplar: Integer, now: Date)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -25509,7 +25509,7 @@
 											"top": 425,
 											"width": 298.05419921875,
 											"height": 13,
-											"text": "+bibliotecar: Bibliotecar",
+											"text": "+librarian: Bibliotecar",
 											"horizontalAlignment": 0
 										},
 										{
@@ -28293,7 +28293,7 @@
 							"top": 256,
 							"width": 241,
 							"height": 146,
-							"text": "Asa ar trebui sa rezolv problema cu entitatea de tip carte din exemplar?\nIn cod, am impresia ca asa am facut by default, pentru ca nu stiu cum sa fac in baza de date asta si am folosit id-uri, in loc de obiectele respective.\nDe exemplu in imprumut, pun doar id-urile pentru abonat si exemplar, nu stiu cum as putea retine pointeri la alte entitati din baza de date.."
+							"text": "Asa ar trebui sa rezolv problema cu entitatea de tip book din exemplar?\nIn cod, am impresia ca asa am facut by default, pentru ca nu stiu cum sa fac in baza de date asta si am folosit id-uri, in loc de obiectele respective.\nDe exemplu in hiring, pun doar id-urile pentru subscriber si exemplar, nu stiu cum as putea retine pointeri la alte entitati din baza de date.."
 						}
 					]
 				},
@@ -29646,7 +29646,7 @@
 											"top": 424,
 											"width": 201,
 											"height": 129,
-											"text": "Aici, la select voi avea doua scenarii. Unul, cand username-ul este gol si se logheaza bibliotecarul si unul cand completam si username-ul si atunci ne logam ca abonat. (posibil ca voi adauga un cod si la bibliotecar in viitor)"
+											"text": "Aici, la select voi avea doua scenarii. Unul, cand username-ul este gol si se logheaza bibliotecarul si unul cand completam si username-ul si atunci ne logam ca subscriber. (posibil ca voi adauga un cod si la librarian in viitor)"
 										},
 										{
 											"_type": "UMLSeqMessageView",
@@ -36086,7 +36086,7 @@
 														"$ref": "AAAAAAFxuDwcCUtz9sk="
 													},
 													"edgePosition": 1,
-													"text": "6 : initializeazaFormularImprumut(exemplar,abonat)"
+													"text": "6 : initializeazaFormularImprumut(exemplar,subscriber)"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -36530,7 +36530,7 @@
 														"$ref": "AAAAAAFxuEBN+0wAQjE="
 													},
 													"edgePosition": 1,
-													"text": "10 : apasaImprumuta(abonat,exemplar,start,stop)"
+													"text": "10 : apasaImprumuta(subscriber,exemplar,start,stop)"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -36875,7 +36875,7 @@
 														"$ref": "AAAAAAFxuEGXT0w75YI="
 													},
 													"edgePosition": 1,
-													"text": "11 : imprumuta(abonat,exemplar,start,stop)"
+													"text": "11 : imprumuta(subscriber,exemplar,start,stop)"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -37335,7 +37335,7 @@
 														"$ref": "AAAAAAFx7kKqDGBMOvY="
 													},
 													"edgePosition": 1,
-													"text": "12 : imprumuta(abonat,exemplar,start,stop)"
+													"text": "12 : imprumuta(subscriber,exemplar,start,stop)"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -37557,7 +37557,7 @@
 														"$ref": "AAAAAAFx7kKYymA3i5E="
 													},
 													"edgePosition": 1,
-													"text": "14 : imprumuta(abonat,exemplar,start,stop)"
+													"text": "14 : imprumuta(subscriber,exemplar,start,stop)"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -38093,7 +38093,7 @@
 									"connector": {
 										"$ref": "AAAAAAFx8FQogwLKpBQ="
 									},
-									"arguments": "exemplar,abonat"
+									"arguments": "exemplar,subscriber"
 								},
 								{
 									"_type": "UMLMessage",
@@ -38170,7 +38170,7 @@
 									"connector": {
 										"$ref": "AAAAAAFx8FRZ8wdQrx0="
 									},
-									"arguments": "abonat,exemplar,start,stop"
+									"arguments": "subscriber,exemplar,start,stop"
 								},
 								{
 									"_type": "UMLMessage",
@@ -38191,7 +38191,7 @@
 									"connector": {
 										"$ref": "AAAAAAFx8F6NkMdo3YA="
 									},
-									"arguments": "abonat,exemplar,start,stop"
+									"arguments": "subscriber,exemplar,start,stop"
 								},
 								{
 									"_type": "UMLMessage",
@@ -38212,7 +38212,7 @@
 									"connector": {
 										"$ref": "AAAAAAFx8F6e2ck54CM="
 									},
-									"arguments": "abonat,exemplar,start,stop"
+									"arguments": "subscriber,exemplar,start,stop"
 								},
 								{
 									"_type": "UMLMessage",
@@ -38254,7 +38254,7 @@
 									"connector": {
 										"$ref": "AAAAAAFx8FStBg3yt4g="
 									},
-									"arguments": "abonat,exemplar,start,stop"
+									"arguments": "subscriber,exemplar,start,stop"
 								},
 								{
 									"_type": "UMLMessage",
@@ -43833,7 +43833,7 @@
 													"height": 13,
 													"alpha": -3.320122540557889,
 													"distance": 135.14806694880988,
-													"text": "6 : initializeazaFormularImprumut(exemplar,abonat)"
+													"text": "6 : initializeazaFormularImprumut(exemplar,subscriber)"
 												},
 												{
 													"_type": "NodeLabelView",
@@ -44166,7 +44166,7 @@
 													"height": 13,
 													"alpha": 1.1606686205936865,
 													"distance": 25.079872407968907,
-													"text": "10 : apasaImprumuta(abonat,exemplar,start,stop)"
+													"text": "10 : apasaImprumuta(subscriber,exemplar,start,stop)"
 												},
 												{
 													"_type": "NodeLabelView",
@@ -44249,7 +44249,7 @@
 													"height": 13,
 													"alpha": 1.5707963267948966,
 													"distance": 10,
-													"text": "11 : imprumuta(abonat,exemplar,start,stop)"
+													"text": "11 : imprumuta(subscriber,exemplar,start,stop)"
 												},
 												{
 													"_type": "NodeLabelView",
@@ -44333,7 +44333,7 @@
 													"height": 13,
 													"alpha": 1.3796115562651026,
 													"distance": 31.575306807693888,
-													"text": "12 : imprumuta(abonat,exemplar,start,stop)"
+													"text": "12 : imprumuta(subscriber,exemplar,start,stop)"
 												},
 												{
 													"_type": "NodeLabelView",
@@ -44500,7 +44500,7 @@
 													"height": 13,
 													"alpha": -0.07187596382604122,
 													"distance": 125.32358118087753,
-													"text": "14 : imprumuta(abonat,exemplar,start,stop)"
+													"text": "14 : imprumuta(subscriber,exemplar,start,stop)"
 												},
 												{
 													"_type": "NodeLabelView",
@@ -46780,7 +46780,7 @@
 														"$ref": "AAAAAAFx7rMYYBfZW58="
 													},
 													"edgePosition": 1,
-													"text": "8 : returneaza(bibliotecar,codAbonat,codExemplar,now)"
+													"text": "8 : returneaza(librarian,codAbonat,codExemplar,now)"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -47002,7 +47002,7 @@
 														"$ref": "AAAAAAFx7rUFqRg2xTc="
 													},
 													"edgePosition": 1,
-													"text": "10 : intarziere = returneaza(abonat,exemplar,now)"
+													"text": "10 : intarziere = returneaza(subscriber,exemplar,now)"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -47113,7 +47113,7 @@
 														"$ref": "AAAAAAFx7rUZbhhLHl0="
 													},
 													"edgePosition": 1,
-													"text": "11 : UPDATE imprumut SET aFostReturnat = true"
+													"text": "11 : UPDATE hiring SET aFostReturnat = true"
 												},
 												{
 													"_type": "EdgeLabelView",
@@ -47821,7 +47821,7 @@
 									"connector": {
 										"$ref": "AAAAAAFx8GH5VhP7JRw="
 									},
-									"arguments": "bibliotecar,codAbonat,codExemplar,now"
+									"arguments": "librarian,codAbonat,codExemplar,now"
 								},
 								{
 									"_type": "UMLMessage",
@@ -47863,7 +47863,7 @@
 									"connector": {
 										"$ref": "AAAAAAFx8GIAfRUPNVU="
 									},
-									"arguments": "abonat,exemplar,now",
+									"arguments": "subscriber,exemplar,now",
 									"assignmentTarget": "intarziere"
 								},
 								{
@@ -47882,7 +47882,7 @@
 									"connector": {
 										"$ref": "AAAAAAFx8GIKMxY+gF0="
 									},
-									"assignmentTarget": "UPDATE imprumut SET aFostReturnat"
+									"assignmentTarget": "UPDATE hiring SET aFostReturnat"
 								},
 								{
 									"_type": "UMLMessage",
@@ -51251,7 +51251,7 @@
 													"height": 13,
 													"alpha": 1.5707963267948966,
 													"distance": 10,
-													"text": "8 : returneaza(bibliotecar,codAbonat,codExemplar,now)"
+													"text": "8 : returneaza(librarian,codAbonat,codExemplar,now)"
 												},
 												{
 													"_type": "NodeLabelView",
@@ -51569,7 +51569,7 @@
 													"height": 13,
 													"alpha": 1.5707963267948966,
 													"distance": 10,
-													"text": "10 : intarziere = returneaza(abonat,exemplar,now)"
+													"text": "10 : intarziere = returneaza(subscriber,exemplar,now)"
 												},
 												{
 													"_type": "NodeLabelView",
@@ -51888,7 +51888,7 @@
 													"height": 13,
 													"alpha": -4.467410709414727,
 													"distance": 24.73863375370596,
-													"text": "11 : UPDATE imprumut SET aFostReturnat = true"
+													"text": "11 : UPDATE hiring SET aFostReturnat = true"
 												},
 												{
 													"_type": "NodeLabelView",
@@ -55699,7 +55699,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFxxy800918IvI="
 									},
-									"name": "bibliotecar",
+									"name": "librarian",
 									"stereotype": "",
 									"type": {
 										"$ref": "AAAAAAFxxxSoW7VpqLc="
@@ -56361,7 +56361,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFxxwgbhVNGXGY="
 											},
-											"name": "abonat",
+											"name": "subscriber",
 											"type": {
 												"$ref": "AAAAAAFxxseUWxEAmuI="
 											}
@@ -56430,7 +56430,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFx7odtOpb3LLI="
 											},
-											"name": "abonat",
+											"name": "subscriber",
 											"type": {
 												"$ref": "AAAAAAFxxseUWxEAmuI="
 											}
@@ -57147,7 +57147,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFxxxul8Q09+ZI="
 											},
-											"name": "abonat",
+											"name": "subscriber",
 											"type": {
 												"$ref": "AAAAAAFxxseUWxEAmuI="
 											}
@@ -57402,7 +57402,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFx5evc3AwdnbE="
 											},
-											"name": "abonat",
+											"name": "subscriber",
 											"type": {
 												"$ref": "AAAAAAFxxseUWxEAmuI="
 											}
@@ -57452,7 +57452,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFx5ewD2Q8Jdqk="
 											},
-											"name": "bibliotecar",
+											"name": "librarian",
 											"type": {
 												"$ref": "AAAAAAFxxxSoW7VpqLc="
 											}
@@ -57644,7 +57644,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFx7hv4M+EQXDo="
 											},
-											"name": "abonat",
+											"name": "subscriber",
 											"type": {
 												"$ref": "AAAAAAFxxseUWxEAmuI="
 											}
@@ -57694,7 +57694,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFx7hw2K+VSqR4="
 											},
-											"name": "abonat",
+											"name": "subscriber",
 											"type": {
 												"$ref": "AAAAAAFxxseUWxEAmuI="
 											}
@@ -57735,7 +57735,7 @@
 											"_parent": {
 												"$ref": "AAAAAAFx7hx9j+xCXi0="
 											},
-											"name": "abonat",
+											"name": "subscriber",
 											"type": {
 												"$ref": "AAAAAAFxxseUWxEAmuI="
 											}
@@ -60625,7 +60625,7 @@
 											"top": 295,
 											"width": 384.439453125,
 											"height": 13,
-											"text": "operatie bibliotecar: oriunde in fluxul normal",
+											"text": "operatie librarian: oriunde in fluxul normal",
 											"horizontalAlignment": 0
 										},
 										{
@@ -64633,7 +64633,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFw9y+TJKjOxAE="
 							},
-							"name": "operatie bibliotecar",
+							"name": "operatie librarian",
 							"location": "oriunde in fluxul normal"
 						},
 						{
