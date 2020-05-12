@@ -20,7 +20,11 @@ javafx {
 dependencies {
 
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-core
-    // compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.14.Final'
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.10.Final'
+
+    // LONG LIVE THE STACK OVERFLOW !!!
+    implementation "jakarta.xml.bind:jakarta.xml.bind-api:2.3.2"
+    implementation "org.glassfish.jaxb:jaxb-runtime:2.3.2"
 
     // http://mvnrepository.com/artifact/postgresql/postgresql
     compile group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'

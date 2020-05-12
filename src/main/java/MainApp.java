@@ -1,6 +1,9 @@
-import Domain.*;
+import Domain.iss.Book;
+import Domain.iss.BookCopy;
+import Domain.iss.Librarian;
+import Domain.iss.Subscriber;
 import MVC.LoginController;
-import Repository.postgres.*;
+import Repository.iss.hbm.*;
 import Service.LibraryService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,7 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Properties;
+
 
 public class MainApp extends Application {
     private LibraryService libraryService;
@@ -20,47 +23,34 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Properties properties = new Properties();
-        try {
-            properties.load(JDBCInvariant.class.getResourceAsStream("/bd.config"));
-            properties.list(System.out);
-        } catch (IOException e) {
-            System.err.println("Cannot find bd.config " + e);
-            return;
-        }
-        new JDBCInvariant(properties); // initialize static fields in object before using anything from app logic
+        CopyHBMRepo copyHBMRepo = new CopyHBMRepo();
+        HiringHBMRepo hiringHBMRepo = new HiringHBMRepo();
+        LibrarianHBMRepo librarianHBMRepo = new LibrarianHBMRepo();
+        SubscriberHBMRepo subscriberHBMRepo = new SubscriberHBMRepo();
+        BookHBMRepo bookHBMRepo = new BookHBMRepo();
 
-        Book book = new Book("ION", "isbn:1234RO","Marcel Avram", "Polina", 1969);
-        BookCopy bookCopy1 = new BookCopy(1, book);
-        BookCopy bookCopy2 = new BookCopy(2, book);
-        BookCopy bookCopy3 = new BookCopy(3, book);
-        //ArrayList<BookCopy> exemplare = new ArrayList<BookCopy>(List.of(bookCopy1, bookCopy2, bookCopy3));
 
-        ExemplarDataBaseRepository repoE = new ExemplarDataBaseRepository();
-        /*repoE.save(bookCopy1);
-        repoE.save(bookCopy2);
-        repoE.save(bookCopy3);*/
 
-        /*Subscriber abonat1 = new Subscriber("1990324240024", "Gheorghe Vasile", "Strada limbii", "08322323", 1, "1");
+        Book book = new Book("Ion Escu", "isbn:1234RO","Marcel Avram", "RAO", 2003);
+        BookCopy bookCopy1 = new BookCopy(1, book.getISBN());
+        BookCopy bookCopy2 = new BookCopy(2, book.getISBN());
+        BookCopy bookCopy3 = new BookCopy(3, book.getISBN());
+
+        Subscriber abonat1 = new Subscriber("1990324240024", "Gheorghe Vasile", "Strada limbii", "08322323", 1, "1");
         Subscriber abonat2 = new Subscriber("1990324240024", "Gheorghe Vasile", "Strada limbii", "08322323", 2, "1");
         Subscriber abonat3 = new Subscriber("1990324240024", "Gheorghe Vasile", "Strada limbii", "08322323", 3, "1");
-        ArrayList<Subscriber> abonati = new ArrayList<Subscriber>(List.of(abonat1, abonat2, abonat3));*/
-
-        SubscriberDataBaseRepository repoA = new SubscriberDataBaseRepository();
-        //repoA.save(abonat1);
-        //repoA.save(abonat2);
-        //repoA.save(abonat3);
 
         Librarian librarian1 = new Librarian(0,"0");
-        LibrarianDataBaseRepository repoB = new LibrarianDataBaseRepository();
-        //repoB.save(librarian1);
+
+        /*copyHBMRepo.save(bookCopy1);copyHBMRepo.save(bookCopy2);copyHBMRepo.save(bookCopy3);
+        librarianHBMRepo.save(librarian1);
+        subscriberHBMRepo.save(abonat1);subscriberHBMRepo.save(abonat2);subscriberHBMRepo.save(abonat3);
+        bookHBMRepo.save(book);*/
+        /*Book book2 = new Book("ALA", "BALA", "PORTOCALA", "HELLO", 2019);
+        bookHBMRepo.save(book2);*/
 
 
-        HiringDataBaseRepository repoI = new HiringDataBaseRepository();
-
-
-
-        libraryService = new LibraryService(repoE, repoA, repoB, repoI);
+        libraryService = new LibraryService(bookHBMRepo, copyHBMRepo, subscriberHBMRepo, librarianHBMRepo, hiringHBMRepo);
 
         init1(primaryStage);
         primaryStage.show();

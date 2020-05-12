@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="Domain.iss">
+    <class name="Subscriber" table="subscribers">
+        <id name="codUnic" column="codUnic">
+            <!--<generator class="increment"/>-->
+        </id>
+        <property type="text" name="adresa"/>
+        <property type="text" name="CNP"/>
+        <property type="text" name="nume"/>
+        <property type="text" name="parola"/>
+        <property type="text" name="telefon"/>
+    </class>
+</hibernate-mapping>

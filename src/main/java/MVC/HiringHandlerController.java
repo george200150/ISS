@@ -1,7 +1,7 @@
 package MVC;
 
-import Domain.Subscriber;
-import Domain.BookCopy;
+import Domain.iss.Subscriber;
+import Domain.iss.BookCopy;
 import Repository.UnavailableException;
 import Service.LibraryService;
 import javafx.event.ActionEvent;

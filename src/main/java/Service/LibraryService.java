@@ -1,13 +1,11 @@
 package Service;
 
-import Domain.BookCopy;
-import Domain.Subscriber;
-import Domain.Librarian;
+import Domain.iss.Book;
+import Domain.iss.BookCopy;
+import Domain.iss.Subscriber;
+import Domain.iss.Librarian;
 import Repository.*;
-import Repository.postgres.HiringDataBaseRepository;
-import Repository.postgres.SubscriberDataBaseRepository;
-import Repository.postgres.LibrarianDataBaseRepository;
-import Repository.postgres.ExemplarDataBaseRepository;
+import Repository.iss.hbm.*;
 import Utils.ChangeEventType;
 import Utils.BookCopyStateChangeEvent;
 import Utils.Observable;
@@ -22,12 +20,14 @@ import java.util.stream.StreamSupport;
 
 public class LibraryService implements Observable<BookCopyStateChangeEvent> {
     private List<Observer> observers = new ArrayList<>();
-    private SubscriberDataBaseRepository repoSubscribers;
-    private LibrarianDataBaseRepository repoLibrarians;
-    private HiringDataBaseRepository repoHirings;
-    private ExemplarDataBaseRepository repoCopies;
+    private SubscriberHBMRepo repoSubscribers;
+    private LibrarianHBMRepo repoLibrarians;
+    private HiringHBMRepo repoHirings;
+    private CopyHBMRepo repoCopies;
+    private BookHBMRepo repoBooks; // check when inserting/updating copies if the info matches the original book's info
 
-    public LibraryService(ExemplarDataBaseRepository repoCopies, SubscriberDataBaseRepository repoSubscribers, LibrarianDataBaseRepository repoLibrarians, HiringDataBaseRepository repoHirings) {
+    public LibraryService(BookHBMRepo repoBooks, CopyHBMRepo repoCopies, SubscriberHBMRepo repoSubscribers, LibrarianHBMRepo repoLibrarians, HiringHBMRepo repoHirings) {
+        this.repoBooks = repoBooks;
         this.repoCopies = repoCopies;
         this.repoSubscribers = repoSubscribers;
         this.repoLibrarians = repoLibrarians;
@@ -80,7 +80,7 @@ public class LibraryService implements Observable<BookCopyStateChangeEvent> {
     public Iterable<BookCopy> getAllAvailableCopies() {
         Iterable<BookCopy> exemplare = this.repoCopies.findAll();
         return StreamSupport.stream(exemplare.spliterator(), false)
-                .filter(this::isAvailableCopy)
+                .filter(x -> this.isAvailableCopy(x.getCodUnic()))
                 .collect(Collectors.toList());
     }
 
@@ -116,24 +116,24 @@ public class LibraryService implements Observable<BookCopyStateChangeEvent> {
 
     private BookCopy findHiredCopyById(int codExemplar) {
         BookCopy ex = this.repoCopies.findOne(codExemplar);
-        if (ex != null && !repoHirings.checkIfExemplarIsDisponibil(ex))
+        if (ex != null && !repoHirings.checkIfExemplarIsDisponibil(codExemplar))
             return ex;
         return null;
     }
 
     private BookCopy findAvailableCopyById(int codExemplar) {
         BookCopy toBeImprumutat = this.repoCopies.findOne(codExemplar);
-        if (toBeImprumutat != null && repoHirings.checkIfExemplarIsDisponibil(toBeImprumutat))
+        if (toBeImprumutat != null && repoHirings.checkIfExemplarIsDisponibil(codExemplar))
             return toBeImprumutat;
         return null;
     }
 
-    public boolean isHiredCopy(BookCopy exem) {
-        return !this.repoHirings.checkIfExemplarIsDisponibil(exem);
+    public boolean isHiredCopy(int codExemplar) {
+        return !this.repoHirings.checkIfExemplarIsDisponibil(codExemplar);
     }
 
-    public boolean isAvailableCopy(BookCopy exem) {
-        return this.repoHirings.checkIfExemplarIsDisponibil(exem);
+    public boolean isAvailableCopy(int codUnic) {
+        return this.repoHirings.checkIfExemplarIsDisponibil(codUnic);
     }
 
     @Override
@@ -151,30 +151,54 @@ public class LibraryService implements Observable<BookCopyStateChangeEvent> {
         observers.forEach(x -> x.update(t));
     }
 
-    public void operate(BookCopy exemplar, String tipOperatie) {
-        if (this.isAvailableCopy(exemplar) || tipOperatie.equals("INSERT")) {
+    public void operate(int codUnic, Book realBook, String tipOperatie) { // TODO: testat la update ca "codUnic" exista in bd (idk... e incomplet, oricum...)
+        if (this.isAvailableCopy(codUnic) || tipOperatie.equals("INSERT")) {
             BookCopy result;
             if (tipOperatie.equals("INSERT")) {
-                result = this.repoCopies.save(exemplar);
-                if (result != null) {
-                    throw new ValidationException("Exemplar duplicat gasit la adaugare!");
+                // validate if existing book ; if values match the book's ones (find book by all fields)
+                Book existing = this.repoBooks.findEquivalent(realBook);
+                if (existing != null) {
+                    result = this.repoCopies.save(new BookCopy(codUnic, realBook.getISBN()));
+                    if (result != null) {
+                        throw new ValidationException("Exemplar duplicat gasit la adaugare!");
+                    }
+                } else {
+                    throw new ValidationException("Nu s-a putut gasi originalul!");
                 }
             } else if (tipOperatie.equals("SELECT")) {
                 // would better implement search based on typing listener in LibrarianController.
             } else if (tipOperatie.equals("UPDATE")) {
-                result = this.repoCopies.update(exemplar);
-                if (result == null) {
-                    throw new ValidationException("Exemplarul nu a putut fi gasit si modificat!");
+                // validate if existing book ; if values match the book's ones (find book by all fields)
+                Book existing = this.repoBooks.findEquivalent(realBook);
+                if (existing != null) {
+                    result = this.repoCopies.update(new BookCopy(codUnic, realBook.getISBN()));
+                    if (result == null) {
+                        throw new ValidationException("Exemplarul nu a putut fi gasit si modificat!");
+                    }
+                } else {
+                    throw new ValidationException("Nu s-a putut gasi originalul!");
                 }
             } else if (tipOperatie.equals("DELETE")) {
-                result = this.repoCopies.delete(exemplar.getCodUnic());
-                if (result != null) {
+                result = this.repoCopies.delete(codUnic);
+                if (result == null) {
                     throw new ValidationException("Exemplarul nu a putut fi gasit si sters!");
                 }
             } // else throw not operation type recognised exception
-            this.notifyObservers(new BookCopyStateChangeEvent(ChangeEventType.OPERATIE, exemplar));
+            this.notifyObservers(new BookCopyStateChangeEvent(ChangeEventType.OPERATIE, new BookCopy(codUnic, realBook.getISBN())));
         } else {
             throw new UnavailableException("Nu se pot efectua modificari asupra exemplarelor inchiriate momentan!");
         }
+    }
+
+    public void shutdown() {
+        SubscriberHBMRepo.close();
+        BookHBMRepo.close();
+        LibrarianHBMRepo.close();
+        HiringHBMRepo.close();
+        CopyHBMRepo.close();
+    }
+
+    public Book findBookById(String isbn) {
+        return this.repoBooks.findOne(isbn);
     }
 }

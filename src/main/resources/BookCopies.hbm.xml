@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="Domain.iss">
+    <class name="BookCopy" table="bookcopies">
+        <id name="codUnic" column="codUnic">
+            <!--<generator class="increment"/>-->
+        </id>
+        <property type="text" name="refer"/>
+    </class>
+</hibernate-mapping>

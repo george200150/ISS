@@ -51,5 +51,6 @@
             <TableColumn fx:id="tableExemplareAbonatColumnAnAparitie" prefWidth="89.0" text="An aparitie" />
         </columns>
       </TableView>
+      <Button layoutX="767.0" layoutY="329.0" mnemonicParsing="false" onAction="#handleExit" text="EXIT" />
    </children>
 </AnchorPane>

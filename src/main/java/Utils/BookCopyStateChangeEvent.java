@@ -1,7 +1,7 @@
 package Utils;
 
 
-import Domain.BookCopy;
+import Domain.iss.BookCopy;
 
 public class BookCopyStateChangeEvent implements Event {
     private ChangeEventType type;

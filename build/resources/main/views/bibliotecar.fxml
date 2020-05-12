@@ -60,16 +60,17 @@
       </GridPane>
       <ButtonBar layoutX="792.0" layoutY="337.0" prefHeight="25.0" prefWidth="277.0">
         <buttons>
-            <Button fx:id="buttonAdauga" mnemonicParsing="false" onAction="#handleOpereaza" text="Adauga" />
-            <Button fx:id="buttonSterge" mnemonicParsing="false" onAction="#handleOpereaza" text="Sterge" />
-            <Button fx:id="buttonModifica" mnemonicParsing="false" onAction="#handleOpereaza" text="Modifica" />
+            <Button fx:id="buttonAdauga" mnemonicParsing="false" onAction="#handleOperate" text="Adauga" />
+            <Button fx:id="buttonSterge" mnemonicParsing="false" onAction="#handleOperate" text="Sterge" />
+            <Button fx:id="buttonModifica" mnemonicParsing="false" onAction="#handleOperate" text="Modifica" />
         </buttons>
       </ButtonBar>
       <Label fx:id="labelBibliotecar" layoutX="68.0" layoutY="44.0" text="librarian: -bib-" />
-      <Button layoutX="167.0" layoutY="458.0" mnemonicParsing="false" onAction="#handleReturneaza" text="Returnare" />
+      <Button layoutX="167.0" layoutY="458.0" mnemonicParsing="false" onAction="#handleReturn" text="Returnare" />
       <TextField fx:id="textFieldCodAbonat" layoutX="167.0" layoutY="383.0" prefWidth="228.0" />
       <TextField fx:id="textFieldCodExemplar" layoutX="167.0" layoutY="420.0" prefWidth="228.0" />
-      <Label layoutX="90.0" layoutY="387.0" text="cod subscriber:" />
+      <Label layoutX="73.0" layoutY="387.0" text="cod subscriber:" />
       <Label layoutX="33.0" layoutY="424.0" text="cod exemplar returnat:" />
+      <Button layoutX="905.0" layoutY="396.0" mnemonicParsing="false" onAction="#handleExit" text="EXIT" />
    </children>
 </AnchorPane>

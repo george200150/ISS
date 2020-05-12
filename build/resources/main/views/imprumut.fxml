@@ -30,7 +30,7 @@
             <DatePicker fx:id="datePickerStart" prefHeight="25.0" prefWidth="220.0" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <Button layoutX="186.0" layoutY="232.0" mnemonicParsing="false" onAction="#handleImprumuta" prefWidth="98.0" text="Inchiriaza" />
+      <Button layoutX="186.0" layoutY="232.0" mnemonicParsing="false" onAction="#handleHire" prefWidth="98.0" text="Inchiriaza" />
       <Button layoutX="293.0" layoutY="232.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="25.0" prefWidth="98.0" text="Inapoi" />
    </children>
 </AnchorPane>

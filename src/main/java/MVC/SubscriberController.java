@@ -1,8 +1,9 @@
 package MVC;
 
-import Domain.BookCopy;
-import Domain.Subscriber;
-import Domain.BookCopyDTO;
+import Domain.iss.Book;
+import Domain.iss.BookCopy;
+import Domain.iss.Subscriber;
+import Domain.iss.BookCopyDTO;
 import Service.LibraryService;
 import Utils.BookCopyStateChangeEvent;
 import Utils.Observer;
@@ -76,7 +77,7 @@ public class SubscriberController extends EmployeeController implements Observer
 
     private List<BookCopyDTO> convertGradeToDTO(List<BookCopy> gradeList) {
         return gradeList.stream()
-                .map(exem -> new BookCopyDTO(exem.getCodUnic(), exem.getRefer()))
+                .map(exem -> { Book found = this.service.findBookById(exem.getRefer()); return new BookCopyDTO(exem.getCodUnic(), found);})
                 .collect(Collectors.toList());
     }
 
@@ -122,5 +123,10 @@ public class SubscriberController extends EmployeeController implements Observer
     @Override
     public void update(BookCopyStateChangeEvent bookCopyStateChangeEvent) {
         initModel();
+    }
+
+    public void handleExit(ActionEvent actionEvent) {
+        this.service.shutdown();
+        this.dialogStage.close();
     }
 }

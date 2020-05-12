@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="Domain.iss">
+    <class name="Hiring" table="hirings">
+        <id name="codUnicImprumut" column="codUnicImprumut">
+            <!--<generator class="increment"/>-->
+        </id>
+        <property type="boolean" name="aFostReturnat"/>
+        <property type="integer" name="creator"/>
+        <property type="date" name="dataEfectuare"/>
+        <property type="date" name="dataRestituire"/>
+        <property type="integer" name="exemplar"/>
+    </class>
+</hibernate-mapping>

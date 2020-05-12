@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="Domain.iss">
+    <class name="Book" table="books">
+        <id name="ISBN" column="ISBN">
+            <!--<generator class="increment"/>--> <!--Generator CANNOT be applied to text value of this column-->
+        </id>
+        <property type="integer" name="anAparitie"/>
+        <property type="text" name="autor"/>
+        <property type="text" name="editura"/>
+        <property type="text" name="titlu"/>
+    </class>
+</hibernate-mapping>

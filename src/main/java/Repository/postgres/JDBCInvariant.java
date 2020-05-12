@@ -1,3 +1,4 @@
+/*
 package Repository.postgres;
 
 
@@ -31,3 +32,4 @@ public class JDBCInvariant {
         return connection;
     }
 }
+*/

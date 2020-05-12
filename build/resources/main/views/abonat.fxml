@@ -40,7 +40,7 @@
             <TextField fx:id="textFieldAnAparitie" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
       </GridPane>
-      <Button layoutX="663.0" layoutY="329.0" mnemonicParsing="false" onAction="#handleImprumuta" text="Imprumuta!" />
+      <Button layoutX="663.0" layoutY="329.0" mnemonicParsing="false" onAction="#handleHire" text="Imprumuta!" />
       <Label fx:id="labelAbonat" layoutX="106.0" layoutY="54.0" text="Nume: -subscriber-" />
       <TableView fx:id="tableExemplareAbonat" layoutX="106.0" layoutY="124.0" onMouseClicked="#handleMoreDetails" prefHeight="230.0" prefWidth="390.0">
         <columns>
@@ -51,5 +51,6 @@
             <TableColumn fx:id="tableExemplareAbonatColumnAnAparitie" prefWidth="89.0" text="An aparitie" />
         </columns>
       </TableView>
+      <Button layoutX="767.0" layoutY="329.0" mnemonicParsing="false" onAction="#handleExit" text="EXIT" />
    </children>
 </AnchorPane>

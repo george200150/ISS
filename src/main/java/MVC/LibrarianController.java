@@ -1,9 +1,9 @@
 package MVC;
 
-import Domain.Book;
-import Domain.BookCopy;
-import Domain.Librarian;
-import Domain.BookCopyDTOWithStatus;
+import Domain.iss.Book;
+import Domain.iss.BookCopy;
+import Domain.iss.Librarian;
+import Domain.iss.BookCopyDTOWithStatus;
 import Repository.OverdueError;
 import Repository.UnavailableException;
 import Repository.ValidationException;
@@ -78,14 +78,13 @@ public class LibrarianController extends EmployeeController implements Observer<
          * DELETE: we need only the id from the "exemplar" object. - search by id and delete the found object
          */
         try {
-            int id = Integer.parseInt(textFieldCodUnic.getText());
+            int id = Integer.parseInt(textFieldCodUnic.getText()); // the new unique code (id) of the bookCopy
             String titlu = textFieldTitlu.getText();
             String ISBN = textFieldISBN.getText();
             String autor = textFieldAutor.getText();
             String editura = textFieldEditura.getText();
             int anAparitie = Integer.parseInt(textFieldAnAparitie.getText());
             Book book = new Book(titlu, ISBN, autor, editura, anAparitie);
-            BookCopy exemplar = new BookCopy(id, book);
             String tipOperatie = "INSERT/SELECT/UPDATE/DELETE";
             Button pressedButton = (Button) actionEvent.getSource();
             String text = pressedButton.getText(); // would work better with getId()
@@ -100,7 +99,7 @@ public class LibrarianController extends EmployeeController implements Observer<
                     tipOperatie = "DELETE";
                     break;
             }
-            this.service.operate(exemplar, tipOperatie); // may throw
+            this.service.operate(id, book, tipOperatie); // may throw
             this.service.getAllExistingCopies(); // get updated the state of the database
             CustomAlert.showMessage(this.dialogStage, Alert.AlertType.CONFIRMATION, "Succes!", text + "re efectuata cu succes!");
         } catch (ValidationException | UnavailableException ex) {
@@ -140,7 +139,7 @@ public class LibrarianController extends EmployeeController implements Observer<
 
     private List<BookCopyDTOWithStatus> convertGradeToDTO(List<BookCopy> gradeList) {
         return gradeList.stream()
-                .map(exem -> new BookCopyDTOWithStatus(exem.getCodUnic(), exem.getRefer(), this.service.isHiredCopy(exem)))
+                .map(exem -> {Book found = this.service.findBookById(exem.getRefer()); return new BookCopyDTOWithStatus(exem.getCodUnic(), found, this.service.isHiredCopy(exem.getCodUnic()));})
                 .collect(Collectors.toList());
     }
 
@@ -174,5 +173,13 @@ public class LibrarianController extends EmployeeController implements Observer<
     @Override
     public void update(BookCopyStateChangeEvent bookCopyStateChangeEvent) {
         initModel();
+    }
+
+    private void shutdown(){
+        this.service.shutdown();
+        this.dialogStage.close();
+    }
+
+    public void handleExit(ActionEvent actionEvent) {this.shutdown();
     }
 }

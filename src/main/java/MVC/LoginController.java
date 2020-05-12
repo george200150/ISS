@@ -1,7 +1,7 @@
 package MVC;
 
-import Domain.Subscriber;
-import Domain.Librarian;
+import Domain.iss.Subscriber;
+import Domain.iss.Librarian;
 import Repository.UnavailableException;
 import Service.LibraryService;
 import javafx.event.ActionEvent;
