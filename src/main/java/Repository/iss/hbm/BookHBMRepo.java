@@ -16,7 +16,7 @@ import java.util.List;
 
 
 public class BookHBMRepo implements CrudRepository<String, Book> {
-    static SessionFactory sessionFactory;
+    private static SessionFactory sessionFactory;
 
     public BookHBMRepo() {
         initialize();

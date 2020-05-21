@@ -23,7 +23,7 @@ import java.util.stream.StreamSupport;
 
 public class HiringHBMRepo implements CrudRepository<Integer, Hiring> {
     private static int counter = 0; // this is for correct Id assignment when creating a new Hiring contract
-    static SessionFactory sessionFactory;
+    private static SessionFactory sessionFactory;
 
     public HiringHBMRepo() {
         initialize();

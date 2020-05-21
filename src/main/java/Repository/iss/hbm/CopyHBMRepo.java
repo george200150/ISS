@@ -16,7 +16,7 @@ import java.util.List;
 
 
 public class CopyHBMRepo implements CrudRepository<Integer, BookCopy> {
-    static SessionFactory sessionFactory;
+    private static SessionFactory sessionFactory;
 
     public CopyHBMRepo() {
         initialize();

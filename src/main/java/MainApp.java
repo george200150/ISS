@@ -31,7 +31,7 @@ public class MainApp extends Application {
 
 
 
-        Book book = new Book("Ion Escu", "isbn:1234RO","Marcel Avram", "RAO", 2003);
+        /*Book book = new Book("Ion Escu", "isbn:1234RO","Marcel Avram", "RAO", 2003);
         BookCopy bookCopy1 = new BookCopy(1, book.getISBN());
         BookCopy bookCopy2 = new BookCopy(2, book.getISBN());
         BookCopy bookCopy3 = new BookCopy(3, book.getISBN());
@@ -40,7 +40,7 @@ public class MainApp extends Application {
         Subscriber abonat2 = new Subscriber("1990324240024", "Gheorghe Vasile", "Strada limbii", "08322323", 2, "1");
         Subscriber abonat3 = new Subscriber("1990324240024", "Gheorghe Vasile", "Strada limbii", "08322323", 3, "1");
 
-        Librarian librarian1 = new Librarian(0,"0");
+        Librarian librarian1 = new Librarian(0,"0");*/
 
         /*copyHBMRepo.save(bookCopy1);copyHBMRepo.save(bookCopy2);copyHBMRepo.save(bookCopy3);
         librarianHBMRepo.save(librarian1);
@@ -54,6 +54,14 @@ public class MainApp extends Application {
 
         init1(primaryStage);
         primaryStage.show();
+
+        Stage secondaryStage = new Stage();
+        init1(secondaryStage);
+        secondaryStage.show();
+
+        Stage tertiaryStage = new Stage();
+        init1(tertiaryStage);
+        tertiaryStage.show();
     }
 
     private void init1(Stage primaryStage) throws IOException {

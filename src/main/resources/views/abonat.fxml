@@ -44,11 +44,8 @@
       <Label fx:id="labelAbonat" layoutX="106.0" layoutY="54.0" text="Nume: -subscriber-" />
       <TableView fx:id="tableExemplareAbonat" layoutX="106.0" layoutY="124.0" onMouseClicked="#handleMoreDetails" prefHeight="230.0" prefWidth="390.0">
         <columns>
-          <TableColumn fx:id="tableExemplareAbonatColumnTitlu" prefWidth="75.0" text="Titlu" />
-          <TableColumn fx:id="tableExemplareAbonatColumnISBN" prefWidth="75.0" text="ISBN" />
-            <TableColumn fx:id="tableExemplareAbonatColumnAutor" prefWidth="75.0" text="Autor" />
-            <TableColumn fx:id="tableExemplareAbonatColumnEditura" prefWidth="75.0" text="Editura" />
-            <TableColumn fx:id="tableExemplareAbonatColumnAnAparitie" prefWidth="89.0" text="An aparitie" />
+          <TableColumn fx:id="tableExemplareAbonatColumnTitlu" prefWidth="195.0" text="Titlu" />
+            <TableColumn fx:id="tableExemplareAbonatColumnAutor" prefWidth="194.0" text="Autor" />
         </columns>
       </TableView>
       <Button layoutX="767.0" layoutY="329.0" mnemonicParsing="false" onAction="#handleExit" text="EXIT" />
