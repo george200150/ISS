@@ -28,55 +28,37 @@ import java.util.stream.StreamSupport;
 
 
 public class LibrarianController extends EmployeeController implements Observer<BookCopyStateChangeEvent> {
-    @FXML
-    private TextField textFieldCodUnic;
-    @FXML
-    private TextField textFieldTitlu;
-    @FXML
-    private TextField textFieldISBN;
-    @FXML
-    private TextField textFieldAutor;
-    @FXML
-    private TextField textFieldEditura;
-    @FXML
-    private TextField textFieldAnAparitie;
-    @FXML
-    private TextField textFieldCodAbonat;
-    @FXML
-    private TextField textFieldCodExemplar;
-    @FXML
-    private TextField textFieldStatus;
-    @FXML
-    private Label labelBibliotecar;
-    @FXML
-    private TableView<BookCopyDTOWithStatus> tableExemplareBibliotecar;
-    @FXML
-    private TableColumn<BookCopyDTOWithStatus, String> tableExemplareBibliotecarColumnCodUnic;
-    @FXML
-    private TableColumn<BookCopyDTOWithStatus, String> tableExemplareBibliotecarColumnTitlu;
-    @FXML
-    private TableColumn<BookCopyDTOWithStatus, String> tableExemplareBibliotecarColumnISBN;
-    @FXML
-    private TableColumn<BookCopyDTOWithStatus, String> tableExemplareBibliotecarColumnAutor;
-    @FXML
-    private TableColumn<BookCopyDTOWithStatus, String> tableExemplareBibliotecarColumnEditura;
-    @FXML
-    private TableColumn<BookCopyDTOWithStatus, String> tableExemplareBibliotecarColumnAnAparitie;
-    @FXML
-    private TableColumn<BookCopyDTOWithStatus, String> tableExemplareBibliotecarColumnStatus;
+    @FXML private TextField textFieldCodUnic;
+    @FXML private TextField textFieldTitlu;
+    @FXML private TextField textFieldISBN;
+    @FXML private TextField textFieldAutor;
+    @FXML private TextField textFieldEditura;
+    @FXML private TextField textFieldAnAparitie;
+    @FXML private TextField textFieldCodAbonat;
+    @FXML private TextField textFieldCodExemplar;
+    @FXML private TextField textFieldStatus;
+    @FXML private Label labelBibliotecar;
+    @FXML private TableView<BookCopyDTOWithStatus> tableExemplareBibliotecar;
+    @FXML private TableColumn<BookCopyDTOWithStatus, String> tableExemplareBibliotecarColumnCodUnic;
+    @FXML private TableColumn<BookCopyDTOWithStatus, String> tableExemplareBibliotecarColumnTitlu;
+    @FXML private TableColumn<BookCopyDTOWithStatus, String> tableExemplareBibliotecarColumnISBN;
+    @FXML private TableColumn<BookCopyDTOWithStatus, String> tableExemplareBibliotecarColumnAutor;
+    @FXML private TableColumn<BookCopyDTOWithStatus, String> tableExemplareBibliotecarColumnEditura;
+    @FXML private TableColumn<BookCopyDTOWithStatus, String> tableExemplareBibliotecarColumnAnAparitie;
+    @FXML private TableColumn<BookCopyDTOWithStatus, String> tableExemplareBibliotecarColumnStatus;
     private Stage dialogStage;
     private Librarian loggedInLibrarian;
     private LibraryService service;
     private ObservableList<BookCopyDTOWithStatus> model = FXCollections.observableArrayList();
 
+    /**
+     * "operationType" specifies the following:
+     * INSERT: all fields from the "exemplar" object are necessary. - just insert
+     * SELECT: we need only the id from the "exemplar" object. - search by id and return the found object
+     * UPDATE: all fields from the "exemplar" object are necessary. - search by id and update the found object
+     * DELETE: we need only the id from the "exemplar" object. - search by id and delete the found object
+     */
     public void handleOperate(ActionEvent actionEvent) { // generic method for any CRUD operation
-        /**
-         * "tipOperatie" specifies the following:
-         * INSERT: all fields from the "exemplar" object are necessary. - just insert
-         * SELECT: we need only the id from the "exemplar" object. - search by id and return the found object
-         * UPDATE: all fields from the "exemplar" object are necessary. - search by id and update the found object
-         * DELETE: we need only the id from the "exemplar" object. - search by id and delete the found object
-         */
         try {
             int id = Integer.parseInt(textFieldCodUnic.getText()); // the new unique code (id) of the bookCopy
             String titlu = textFieldTitlu.getText();
@@ -85,21 +67,21 @@ public class LibrarianController extends EmployeeController implements Observer<
             String editura = textFieldEditura.getText();
             int anAparitie = Integer.parseInt(textFieldAnAparitie.getText());
             Book book = new Book(titlu, ISBN, autor, editura, anAparitie);
-            String tipOperatie = "INSERT/SELECT/UPDATE/DELETE";
+            String operationType = "INSERT/SELECT/UPDATE/DELETE";
             Button pressedButton = (Button) actionEvent.getSource();
             String text = pressedButton.getText(); // would work better with getId()
             switch (text) {
                 case "Adauga":
-                    tipOperatie = "INSERT";
+                    operationType = "INSERT";
                     break;
                 case "Modifica":
-                    tipOperatie = "UPDATE";
+                    operationType = "UPDATE";
                     break;
                 case "Sterge":
-                    tipOperatie = "DELETE";
+                    operationType = "DELETE";
                     break;
             }
-            this.service.operate(id, book, tipOperatie); // may throw
+            this.service.operate(id, book, operationType); // may throw
             this.service.getAllExistingCopies(); // get updated the state of the database
             CustomAlert.showMessage(this.dialogStage, Alert.AlertType.CONFIRMATION, "Succes!", text + "re efectuata cu succes!");
         } catch (ValidationException | UnavailableException ex) {

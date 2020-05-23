@@ -23,14 +23,14 @@ public class CopyHBMRepo implements CrudRepository<Integer, BookCopy> {
     }
 
     @Override
-    public BookCopy findOne(Integer codUnic) {
+    public BookCopy findOne(Integer uniqueCode) {
         try (Session session = sessionFactory.openSession()) {
             Transaction tx = null;
             try {
                 tx = session.beginTransaction();
 
                 Query query = session.createQuery("from BookCopy where codUnic = :cod", BookCopy.class);
-                query.setParameter("cod", codUnic);
+                query.setParameter("cod", uniqueCode);
                 BookCopy bookCopy = (BookCopy) query.setMaxResults(1).uniqueResult();
 
                 System.out.println(bookCopy + " bookCopy found");
@@ -93,11 +93,11 @@ public class CopyHBMRepo implements CrudRepository<Integer, BookCopy> {
     }
 
     @Override
-    public BookCopy delete(Integer codUnic) {
-        if (codUnic == null) {
+    public BookCopy delete(Integer uniqueCode) {
+        if (uniqueCode == null) {
             throw new IllegalArgumentException("ID-ul nu poate fi NULL!");
         }
-        BookCopy bookCopy = findOne(codUnic);
+        BookCopy bookCopy = findOne(uniqueCode);
         if (bookCopy != null) { // if it makes sense looking for it
             try (Session session = sessionFactory.openSession()) {
                 Transaction tx = null;
@@ -105,7 +105,7 @@ public class CopyHBMRepo implements CrudRepository<Integer, BookCopy> {
                     tx = session.beginTransaction();
 
                     Query query = session.createQuery("from BookCopy where codUnic = :cod", BookCopy.class);
-                    query.setParameter("cod", codUnic);
+                    query.setParameter("cod", uniqueCode);
                     BookCopy crit = (BookCopy) query.setMaxResults(1).uniqueResult();
 
                     System.err.println("delete book copy " + crit.getCodUnic());

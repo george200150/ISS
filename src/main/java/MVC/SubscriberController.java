@@ -38,10 +38,7 @@ public class SubscriberController extends EmployeeController implements Observer
     @FXML private Label labelAbonat;
     @FXML private TableView<BookCopyDTO> tableExemplareAbonat;
     @FXML private TableColumn<BookCopyDTO, String> tableExemplareAbonatColumnTitlu;
-    // @FXML private TableColumn<BookCopyDTO, String> tableExemplareAbonatColumnISBN;
     @FXML private TableColumn<BookCopyDTO, String> tableExemplareAbonatColumnAutor;
-    // @FXML private TableColumn<BookCopyDTO, String> tableExemplareAbonatColumnEditura;
-    // @FXML private TableColumn<BookCopyDTO, String> tableExemplareAbonatColumnAnAparitie;
     private Stage dialogStage;
     private Subscriber loggedInSubscriber;
     private LibraryService service;
@@ -68,10 +65,7 @@ public class SubscriberController extends EmployeeController implements Observer
     @FXML
     public void initialize() {
         tableExemplareAbonatColumnTitlu.setCellValueFactory(new PropertyValueFactory<BookCopyDTO, String>("titlu"));
-        // tableExemplareAbonatColumnISBN.setCellValueFactory(new PropertyValueFactory<BookCopyDTO, String>("ISBN"));
         tableExemplareAbonatColumnAutor.setCellValueFactory(new PropertyValueFactory<BookCopyDTO, String>("autor"));
-        // tableExemplareAbonatColumnEditura.setCellValueFactory(new PropertyValueFactory<BookCopyDTO, String>("editura"));
-        // tableExemplareAbonatColumnAnAparitie.setCellValueFactory(new PropertyValueFactory<BookCopyDTO, String>("anAparitie"));
         tableExemplareAbonat.setItems(model);
     }
 
@@ -100,7 +94,7 @@ public class SubscriberController extends EmployeeController implements Observer
             try {
                 // create a new stage for the popup dialog.
                 FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("/views/imprumut.fxml"));
+                loader.setLocation(getClass().getResource("/views/HiringView.fxml"));
                 AnchorPane root = (AnchorPane) loader.load();
 
                 // Create the dialog Stage.

@@ -23,14 +23,14 @@ public class BookHBMRepo implements CrudRepository<String, Book> {
     }
 
     @Override
-    public Book findOne(String codUnic) {
+    public Book findOne(String ISBN) {
         try (Session session = sessionFactory.openSession()) {
             Transaction tx = null;
             try {
                 tx = session.beginTransaction();
 
                 Query query = session.createQuery("from Book where ISBN = :isbn", Book.class);
-                query.setParameter("isbn", codUnic);
+                query.setParameter("isbn", ISBN);
                 Book book = (Book) query.setMaxResults(1).uniqueResult();
 
                 System.out.println(book + " book found");
@@ -176,13 +176,13 @@ public class BookHBMRepo implements CrudRepository<String, Book> {
     /**
      * This method will string match all the input fields received
      * (encapsulated in a book - id does not matter when searching)
-     * and return the book that is identic to @param{book1}.
+     * and return the book that is identic to @param{equivBook}.
      * This validation is necessary in order to avoid creating a copy of a non existing book.
      *
      * The id of the copy is not necessary to be validated, as there is an in-place validation
      * of it in the @method{save()} from @class{CopyHBMRepo}, so we always avoid duplicated PK-s.
      */
-    public Book findEquivalent(Book book1) {
+    public Book findEquivalent(Book equivBook) {
 
         try (Session session = sessionFactory.openSession()) {
             Transaction tx = null;
@@ -190,11 +190,11 @@ public class BookHBMRepo implements CrudRepository<String, Book> {
                 tx = session.beginTransaction();
 
                 Query query = session.createQuery("from Book where autor = :aut and anAparitie = :anap and editura = :editu and titlu = :titl and ISBN = :isbn", Book.class);
-                query.setParameter("aut", book1.getAutor());
-                query.setParameter("anap", book1.getAnAparitie());
-                query.setParameter("editu", book1.getEditura());
-                query.setParameter("titl", book1.getTitlu());
-                query.setParameter("isbn", book1.getISBN());
+                query.setParameter("aut", equivBook.getAutor());
+                query.setParameter("anap", equivBook.getAnAparitie());
+                query.setParameter("editu", equivBook.getEditura());
+                query.setParameter("titl", equivBook.getTitlu());
+                query.setParameter("isbn", equivBook.getISBN());
                 Book book = (Book) query.setMaxResults(1).uniqueResult();
 
                 System.out.println(book + " book found");

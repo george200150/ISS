@@ -17,12 +17,9 @@ import java.util.Date;
 
 
 public class HiringHandlerController {
-    @FXML
-    private TextField textFieldExemplar;
-    @FXML
-    private DatePicker datePickerStop;
-    @FXML
-    private DatePicker datePickerStart;
+    @FXML private TextField textFieldExemplar;
+    @FXML private DatePicker datePickerStop;
+    @FXML private DatePicker datePickerStart;
 
     private Subscriber loggedInSubscriber;
     private BookCopy bookCopy;
@@ -51,8 +48,7 @@ public class HiringHandlerController {
             this.parentStage.show();
             this.thisStage.close();
             CustomAlert.showMessage(this.thisStage, Alert.AlertType.CONFIRMATION, "confirmare", "Ati imprumutat cu succes exemplarul!");
-        }
-        catch (UnavailableException unavX){
+        } catch (UnavailableException unavX) {
             CustomAlert.showErrorMessage(this.thisStage, unavX.getMessage());
         }
     }

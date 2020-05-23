@@ -15,15 +15,15 @@ import org.hibernate.query.Query;
 import java.util.List;
 
 
-public class SubscriberHBMRepo implements CrudRepository<Integer, Subscriber> {
-    static SessionFactory sessionFactory;
+public class SubscriberHBMRepo extends EmployeeRepo implements CrudRepository<Integer, Subscriber> {
+    private static SessionFactory sessionFactory;
 
     public SubscriberHBMRepo() {
         initialize();
     }
 
 
-    public Subscriber findByCredentials(int codUnic, String password) throws IllegalArgumentException {
+    public Subscriber findByCredentials(int uniqueCode, String password) throws IllegalArgumentException {
         if (password == null) {
             throw new IllegalArgumentException("PAROLA NU POATE FI NULL");
         }
@@ -33,7 +33,7 @@ public class SubscriberHBMRepo implements CrudRepository<Integer, Subscriber> {
                 tx = session.beginTransaction();
 
                 Query query = session.createQuery("from Subscriber where codUnic = :cod and parola = :parola", Subscriber.class);
-                query.setParameter("cod", codUnic);
+                query.setParameter("cod", uniqueCode);
                 query.setParameter("parola", password);
                 Subscriber subscriber = (Subscriber) query.setMaxResults(1).uniqueResult();
 
@@ -49,14 +49,14 @@ public class SubscriberHBMRepo implements CrudRepository<Integer, Subscriber> {
     }
 
     @Override
-    public Subscriber findOne(Integer codUnic) {
+    public Subscriber findOne(Integer uniqueCode) {
         try (Session session = sessionFactory.openSession()) {
             Transaction tx = null;
             try {
                 tx = session.beginTransaction();
 
                 Query query = session.createQuery("from Subscriber where codUnic = :cod", Subscriber.class);
-                query.setParameter("cod", codUnic);
+                query.setParameter("cod", uniqueCode);
                 Subscriber subscriber = (Subscriber) query.setMaxResults(1).uniqueResult();
 
                 System.out.println(subscriber + " subscriber found");

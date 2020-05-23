@@ -9,11 +9,10 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<!--fx:controller="Login"-->
 
 <AnchorPane prefHeight="366.0" prefWidth="608.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MVC.LoginController">
    <children>
-      <Button fx:id="buttonLogIn" layoutX="248.0" layoutY="233.0" mnemonicParsing="false" onAction="#handleLogIn" text="Autentificati-va!" />
+      <Button layoutX="248.0" layoutY="233.0" mnemonicParsing="false" onAction="#handleLogIn" text="Autentificati-va!" />
       <Label layoutX="262.0" layoutY="30.0" text="AUTENTIFICARE" />
       <Label layoutX="142.0" layoutY="292.0" text="nu se pot inchiria mai multe exemplare ale aceleiasi carti !!!" textFill="#f4f4f4" />
       <GridPane layoutX="140.0" layoutY="133.0" prefHeight="60.0" prefWidth="328.0">

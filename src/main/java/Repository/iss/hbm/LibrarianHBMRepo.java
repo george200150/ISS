@@ -15,15 +15,15 @@ import org.hibernate.query.Query;
 import java.util.List;
 
 
-public class LibrarianHBMRepo implements CrudRepository<Integer, Librarian> {
-    static SessionFactory sessionFactory;
+public class LibrarianHBMRepo extends EmployeeRepo implements CrudRepository<Integer, Librarian> {
+    private static SessionFactory sessionFactory;
 
     public LibrarianHBMRepo() {
         initialize();
     }
 
 
-    public Librarian findByCredentials(int codUnic, String password) throws IllegalArgumentException {
+    public Librarian findByCredentials(int uniqueCode, String password) throws IllegalArgumentException {
         if (password == null) {
             throw new IllegalArgumentException("PAROLA NU POATE FI NULL");
         }
@@ -33,7 +33,7 @@ public class LibrarianHBMRepo implements CrudRepository<Integer, Librarian> {
                 tx = session.beginTransaction();
 
                 Query query = session.createQuery("from Librarian where codUnic = :cod and parola = :parola", Librarian.class);
-                query.setParameter("cod", codUnic);
+                query.setParameter("cod", uniqueCode);
                 query.setParameter("parola", password);
                 Librarian librarian = (Librarian) query.setMaxResults(1).uniqueResult();
 

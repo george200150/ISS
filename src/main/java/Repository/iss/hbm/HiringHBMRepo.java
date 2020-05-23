@@ -165,7 +165,7 @@ public class HiringHBMRepo implements CrudRepository<Integer, Hiring> {
         return null;
     }
 
-    public static void initialize() {
+    private static void initialize() {
         // A SessionFactory is set up once for an application!
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure()
@@ -184,9 +184,9 @@ public class HiringHBMRepo implements CrudRepository<Integer, Hiring> {
         }
     }
 
-    public int returneaza(Subscriber loggedInSubscriber, BookCopy exemplar, Date now) {
+    public int returnCopy(Subscriber loggedInSubscriber, BookCopy bookCopy, Date now) {
         // find logged hired copy entry in the DB
-        Hiring hiring = this.findImprumutByAbonatAndExemplar(loggedInSubscriber, exemplar);
+        Hiring hiring = this.findImprumutByAbonatAndExemplar(loggedInSubscriber, bookCopy);
         if (hiring == null)
             throw new UnavailableException("Exemplarul de returnat nu a putut fi gasit!");
 
@@ -212,24 +212,24 @@ public class HiringHBMRepo implements CrudRepository<Integer, Hiring> {
         return null;
     }
 
-    public void imprumuta(Subscriber loggedInSubscriber, BookCopy exemplar, Date start, Date stop) {
+    public void hireCopy(Subscriber loggedInSubscriber, BookCopy bookCopy, Date start, Date stop) {
         if (FunctionsUtils.getWeeksBetween(start, stop) <= 0) {
             throw new ValidationException("Nu puteti imprumuta exemplarul in acest interval!");
         } else {
-            if (!this.checkIfExemplarIsDisponibil(exemplar.getCodUnic()))
+            if (!this.isCopyAvailable(bookCopy.getCodUnic()))
                 throw new UnavailableException("Exemplarul de imprumutat nu mai este disponibil!");
 
-            Hiring hiring = new Hiring(counter, start, stop, false, loggedInSubscriber.getCodUnic(), exemplar.getCodUnic());
+            Hiring hiring = new Hiring(counter, start, stop, false, loggedInSubscriber.getCodUnic(), bookCopy.getCodUnic());
 
             this.save(hiring);
             counter++;
         }
     }
 
-    public boolean checkIfExemplarIsDisponibil(int codUnic) {
+    public boolean isCopyAvailable(int uniqueCode) {
         List<Hiring> fromDBresult = StreamSupport
                 .stream(this.findAll().spliterator(), false)
-                .filter(x -> x.getExemplar() == codUnic)
+                .filter(x -> x.getExemplar() == uniqueCode)
                 .filter(x -> !x.isaFostReturnat())
                 .collect(Collectors.toList());
         return fromDBresult.size() <= 0;

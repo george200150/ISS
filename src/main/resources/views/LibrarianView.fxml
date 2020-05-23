@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<!--fx:controller="Librarian"-->
 
 <AnchorPane prefHeight="561.0" prefWidth="1101.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MVC.LibrarianController">
    <children>
@@ -60,9 +59,9 @@
       </GridPane>
       <ButtonBar layoutX="792.0" layoutY="337.0" prefHeight="25.0" prefWidth="277.0">
         <buttons>
-            <Button fx:id="buttonAdauga" mnemonicParsing="false" onAction="#handleOperate" text="Adauga" />
-            <Button fx:id="buttonSterge" mnemonicParsing="false" onAction="#handleOperate" text="Sterge" />
-            <Button fx:id="buttonModifica" mnemonicParsing="false" onAction="#handleOperate" text="Modifica" />
+            <Button mnemonicParsing="false" onAction="#handleOperate" text="Adauga" />
+            <Button mnemonicParsing="false" onAction="#handleOperate" text="Sterge" />
+            <Button mnemonicParsing="false" onAction="#handleOperate" text="Modifica" />
         </buttons>
       </ButtonBar>
       <Label fx:id="labelBibliotecar" layoutX="68.0" layoutY="44.0" text="librarian: -bib-" />

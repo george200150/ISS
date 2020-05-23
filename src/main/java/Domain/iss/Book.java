@@ -15,9 +15,7 @@ public class Book {
         this.anAparitie = anAparitie;
     }
 
-    public Book() {
-
-    }
+    public Book() { }
 
     public String getTitlu() {
         return titlu;

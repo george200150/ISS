@@ -45,12 +45,12 @@ public class LoginController {
                     try {
                         // create a new stage for the popup dialog.
                         FXMLLoader loader = new FXMLLoader();
-                        loader.setLocation(getClass().getResource("/views/abonat.fxml"));
+                        loader.setLocation(getClass().getResource("/views/SubscriberView.fxml"));
                         AnchorPane root = (AnchorPane) loader.load();
 
-                        // Create the dialog Stage.
+                        // Create the dialog Stage and set the data to the stage.
                         Stage dialogStage = new Stage();
-                        dialogStage.setTitle("Fereastra Subscriber");
+                        dialogStage.setTitle("Subscriber Window");
                         dialogStage.initModality(Modality.WINDOW_MODAL);
                         Scene scene = new Scene(root);
                         dialogStage.setScene(scene);
@@ -67,12 +67,12 @@ public class LoginController {
                     try {
                         // create a new stage for the popup dialog.
                         FXMLLoader fxmlLoader = new FXMLLoader();
-                        fxmlLoader.setLocation(getClass().getResource("/views/bibliotecar.fxml"));
+                        fxmlLoader.setLocation(getClass().getResource("/views/LibrarianView.fxml"));
                         AnchorPane root = fxmlLoader.load();
 
-                        // Create the dialog Stage.
+                        // Create the dialog Stage and set the data to the stage.
                         Stage dialogStage = new Stage();
-                        dialogStage.setTitle("Fereastra  Librarian");
+                        dialogStage.setTitle("Librarian Window");
                         dialogStage.initModality(Modality.WINDOW_MODAL);
                         Scene scene = new Scene(root);
                         dialogStage.setScene(scene);

@@ -1,7 +1,3 @@
-import Domain.iss.Book;
-import Domain.iss.BookCopy;
-import Domain.iss.Librarian;
-import Domain.iss.Subscriber;
 import MVC.LoginController;
 import Repository.iss.hbm.*;
 import Service.LibraryService;
@@ -67,7 +63,7 @@ public class MainApp extends Application {
     private void init1(Stage primaryStage) throws IOException {
 
         FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("/views/login.fxml"));
+        fxmlLoader.setLocation(getClass().getResource("/views/LoginView.fxml"));
         AnchorPane gradeLayout = fxmlLoader.load();
 
         primaryStage.setScene(new Scene(gradeLayout));
