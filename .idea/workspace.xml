@@ -95,7 +95,7 @@
     <property name="DatabaseDriversLRU" value="postgresql" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources" />
+    <property name="last_opened_file_path" value="C:/xampp/htdocs/JAVA/ex6/mvcExample-IntelliJIDEA-13.1.3" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -223,6 +223,8 @@
       <workItem from="1590256631552" duration="217000" />
       <workItem from="1590266312720" duration="10783000" />
       <workItem from="1590306084471" duration="206000" />
+      <workItem from="1590319533347" duration="17000" />
+      <workItem from="1590395861077" duration="1262000" />
     </task>
     <servers />
   </component>
