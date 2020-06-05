@@ -69,7 +69,7 @@ public class CopyHBMRepo implements CrudRepository<Integer, BookCopy> {
     }
 
     @Override
-    public BookCopy save(BookCopy entity) {
+public BookCopy save(BookCopy entity) {
         if (entity == null) {
             throw new IllegalArgumentException("ENTITATEA NU POATE FI NULL");
         }

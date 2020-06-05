@@ -23,12 +23,13 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 
 public class LibrarianController extends EmployeeController implements Observer<BookCopyStateChangeEvent> {
-    @FXML private TextField textFieldCodUnic;
+    //@FXML private TextField textFieldCodUnic;
     @FXML private TextField textFieldTitlu;
     @FXML private TextField textFieldISBN;
     @FXML private TextField textFieldAutor;
@@ -50,6 +51,7 @@ public class LibrarianController extends EmployeeController implements Observer<
     private Librarian loggedInLibrarian;
     private LibraryService service;
     private ObservableList<BookCopyDTOWithStatus> model = FXCollections.observableArrayList();
+    private int currentMaxID = -1;
 
     /**
      * "operationType" specifies the following:
@@ -60,7 +62,9 @@ public class LibrarianController extends EmployeeController implements Observer<
      */
     public void handleOperate(ActionEvent actionEvent) { // generic method for any CRUD operation
         try {
-            int id = Integer.parseInt(textFieldCodUnic.getText()); // the new unique code (id) of the bookCopy
+            //int id = Integer.parseInt(textFieldCodUnic.getText()); // the new unique code (id) of the bookCopy
+            BookCopyDTOWithStatus item = tableExemplareBibliotecar.getSelectionModel().getSelectedItem();
+            int id = -1;
             String titlu = textFieldTitlu.getText();
             String ISBN = textFieldISBN.getText();
             String autor = textFieldAutor.getText();
@@ -73,16 +77,22 @@ public class LibrarianController extends EmployeeController implements Observer<
             switch (text) {
                 case "Adauga":
                     operationType = "INSERT";
+                    id = currentMaxID + 1; // insert the (id+ 1) in the DB, as the currentMaxID already exists
                     break;
                 case "Modifica":
                     operationType = "UPDATE";
+                    if (item != null)
+                        id = item.getCodUnic(); // if not insert, get the id from the selected item (if exists)
                     break;
                 case "Sterge":
                     operationType = "DELETE";
+                    if (item != null)
+                        id = item.getCodUnic(); // if not insert, get the id from the selected item (if exists)
                     break;
             }
             this.service.operate(id, book, operationType); // may throw
             this.service.getAllExistingCopies(); // get updated the state of the database
+            setUpIncrement(this.service);
             CustomAlert.showMessage(this.dialogStage, Alert.AlertType.CONFIRMATION, "Succes!", text + "re efectuata cu succes!");
         } catch (ValidationException | UnavailableException ex) {
             CustomAlert.showErrorMessage(this.dialogStage, ex.getMessage());
@@ -98,6 +108,16 @@ public class LibrarianController extends EmployeeController implements Observer<
         service.addObserver(this);
         initModel();
         this.labelBibliotecar.setText(loggedInLibrarian.toString());
+        // optional integer (no return value when the repository is empty)
+        setUpIncrement(this.service);
+    }
+
+    private void setUpIncrement(LibraryService libraryService){
+        Optional<Integer> max = StreamSupport.stream(libraryService.getAllExistingCopies().spliterator(), false)
+                .map(BookCopy::getCodUnic)
+                .max(Integer::compareTo);
+        // if the maximum id is found, we assign its value to the controller attribute, so that it automatically sets the id to new book copies.
+        max.ifPresent(integer -> this.currentMaxID = integer);
     }
 
     private void initModel() {
@@ -128,7 +148,7 @@ public class LibrarianController extends EmployeeController implements Observer<
     public void handleMoreDetails(MouseEvent mouseEvent) {
         BookCopyDTOWithStatus dto = this.tableExemplareBibliotecar.getSelectionModel().getSelectedItem();
         if (dto != null) {
-            this.textFieldCodUnic.setText(Integer.toString(dto.getCodUnic()));
+            //this.textFieldCodUnic.setText(Integer.toString(dto.getCodUnic()));
             this.textFieldTitlu.setText(dto.getTitlu());
             this.textFieldISBN.setText(dto.getISBN());
             this.textFieldAutor.setText(dto.getAutor());

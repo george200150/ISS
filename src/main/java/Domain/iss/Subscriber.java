@@ -68,4 +68,9 @@ public class Subscriber extends Employee {
     public void setParola(String parola) {
         this.parola = parola;
     }
+
+    @Override
+    public String toString() {
+        return "Abonat " + nume;
+    }
 }

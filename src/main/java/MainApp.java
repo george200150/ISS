@@ -45,7 +45,7 @@ public class MainApp extends Application {
         /*Book book2 = new Book("ALA", "BALA", "PORTOCALA", "HELLO", 2019);
         bookHBMRepo.save(book2);*/
 
-
+        //IMPORTANT NOTE: simulating client-server via an app running on the same process will result in shutting down the database when a client disconnects.
         libraryService = new LibraryService(bookHBMRepo, copyHBMRepo, subscriberHBMRepo, librarianHBMRepo, hiringHBMRepo);
 
         init1(primaryStage);
